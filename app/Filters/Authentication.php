@@ -16,11 +16,11 @@ class Authentication implements FilterInterface
     {
         if (session()->get('isLoggedIn') == TRUE) {
 
-            if (!isset($_COOKIE['AX_karnivorTECHNOLOGY'])) {
+            if (!isset($_COOKIE['KARNIVOR'])) {
                 return redirect()->to(base_url('logout'));
             } else {
                 try {
-                    $jwt = $_COOKIE['AX_karnivorTECHNOLOGY'];
+                    $jwt = $_COOKIE['KARNIVOR'];
                     $decoded = JWT::decode($jwt, new Key(getenv('app.secretkey'), 'HS256'));
                     $customerModel = new CustomerModel();
                     $checkSession =   $customerModel->checkSession($decoded->jti, $decoded->email);
