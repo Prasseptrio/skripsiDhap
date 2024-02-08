@@ -20,16 +20,14 @@ class Profile extends BaseController
 		if (session()->get('isLoggedIn') != TRUE) {
 			return redirect()->to(base_url('login'));
 		}
-		$phone = $this->data['customer']['customer_telephone'];
+		$phone = $this->data['customer']['customer_whatsapp'];
 		if ($phone == '') {
 			session()->setFlashdata('warningSwall', 'Silahkan lengkapi nomor telepon anda.');
 		}
 		$data = array_merge($this->data, [
-			'title'         => 'Akun Saya di Situs Pneumatic, Hydraulic, Networking, Software Terlengkap dan Terpercaya',
+			'title'         => 'Akun Saya Website Karnivor',
 			'description'   => '',
 			'keyword'   	=> '',
-			'Address'		=> $this->customerModel->getAddress(session()->get('CID'), 1),
-			'Province'      => $this->rajaongkir->getProvince(),
 			'Rescource'		=> $resource
 		]);
 		return view('account/profile/profile', $data);

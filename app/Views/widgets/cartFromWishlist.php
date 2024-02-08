@@ -22,5 +22,5 @@
 <?php if ($cart == null) : ?>
     <button class="btn btn-primary mt-4 btn-block font-weight-semibold btn-h-2 btn-4 h-100 BtnCheck1" type="submit" style="background-color: #f1f3f7; border-color:#6c6c6e; color:#78797b ;" value="1"><span class="text-4">Checkout</span></button>
 <?php else : ?>
-    <a href="<?= base_url('checkout'); ?>" class="btn btn-primary mt-4 font-weight-semibold btn-h-2 btn-4 h-100 btn-block" type="submit"><span class="text-4">Checkout</span></a>
+    <a href="<?= base_url('checkout'); ?>" class="btn btn-danger border-light mt-4 font-weight-semibold btn-h-2 btn-4 h-100 btn-block" type="submit"><span class="text-4">Checkout</span></a>
 <?php endif; ?>

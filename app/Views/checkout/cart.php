@@ -14,19 +14,21 @@
                      <?php krsort($Cart);
                      foreach ($Cart as $cart) : ?>
                         <div class="input-button">
-                           <input class="form-check-input checkitemBox mr-2" type="checkbox" id="CheckBox<?= $cart['product_uuid']; ?>" data-id="<?= $cart['product_uuid']; ?>" data-name="<?= $cart['product_name']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>" data-image="<?= $cart['product_image']; ?>" data-model="<?= $cart['product_model']; ?>" data-customer="<?= $customer['customer_id']; ?>" data-weight="<?= $cart['weight']; ?>">
+                           <input class="form-check-input checkitemBox mr-2" type="checkbox" id="CheckBox<?= $cart['product_id']; ?>" data-id="<?= $cart['product_id']; ?>" data-name="<?= $cart['product_name']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>" data-image="<?= $cart['product_image']; ?>" data-customer="<?= $customer['customer_id']; ?>">
                         </div>
                         <div class="detail-cart mb-3">
                            <div class="row justify-content-center">
                               <div class="col-3">
-                                 <a href="<?= base_url($cart['product_slug']); ?>">
-                                    <img src="<?= getenv('app.assetURL') . ($cart['product_image']); ?>" class="img-fluid mx-2" width="120" alt="<?= $cart['product_name'] . ' ' . $cart['product_model']; ?>" />
+                                 <a href="<?= base_url($cart['product_id']); ?>">
+                                    <img src="<?= getenv('app.assetURL') . ($cart['product_image']); ?>" class="img-fluid mx-2" width="100" style="max-height: 200px;" alt="<?= $cart['product_name']  ?>" />
                                  </a>
                               </div>
-                              <div class="col-8">
-                                 <a href="<?= base_url($cart['product_slug']); ?>">
+                              <div class="col-8 mt-2">
+                                 <br>
+                                 <br>
+                                 <br>
+                                 <a href="<?= base_url($cart['product_id']); ?>">
                                     <span class="text-3"><b><?= $cart['product_name']; ?></b></span><br>
-                                    <span class=""><b>Model :</b> <?= $cart['product_model']; ?></span><br><br>
                                     <span class="text-4"> <b>Rp. <?= number_format($cart['price']); ?></b></span>
                                  </a>
                               </div>
@@ -34,13 +36,13 @@
                            <div class="row mt-3">
                               <div class="col-5 d-flex justify-content-end">
                                  <div class="quantity">
-                                    <input type="button" value="-" class="minus QunatitY rounded" id="Minus<?= $cart['product_uuid']; ?>" <?= ($cart['quantity'] <= 1) ? 'disabled' : ''; ?> data-id="<?= $cart['product_uuid']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
-                                    <input type="number" step="1" min="1" name="quantity" value="<?= $cart['quantity'] ?>" id="qtY<?= $cart['product_uuid']; ?>" title="Qty" class="qty inputQuantity" size="2" data-sku="<?= $cart['product_sku']; ?>" data-id="<?= $cart['product_uuid']; ?>" data-price="<?= $cart['price']; ?>">
-                                    <input type="button" value="+" class="plus PLUS rounded" data-id="<?= $cart['product_uuid']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
+                                    <input type="button" value="-" class="minus QunatitY rounded" id="Minus<?= $cart['product_id']; ?>" <?= ($cart['quantity'] <= 1) ? 'disabled' : ''; ?> data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
+                                    <input type="number" step="1" min="1" name="quantity" value="<?= $cart['quantity'] ?>" id="qtY<?= $cart['product_id']; ?>" title="Qty" class="qty inputQuantity" size="2" data-sku="<?= $cart['product_sku']; ?>" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>">
+                                    <input type="button" value="+" class="plus PLUS rounded" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
                                  </div>
                               </div>
                               <div class="col-5 text-right">
-                                 <h4 class="d-inline"><b>Total :</b></h4> <span class="text-5 mt-2" id="SubTOtal<?= $cart['product_uuid']; ?>">Rp. <?= number_format($cart['price'] * $cart['quantity']); ?></span>
+                                 <h4 class="d-inline"><b>Total :</b></h4> <span class="text-5 mt-2" id="SubTOtal<?= $cart['product_id']; ?>">Rp. <?= number_format($cart['price'] * $cart['quantity']); ?></span>
                               </div>
                               <div class="col-2 text-right">
                                  <form action="<?= base_url('cart/deleteProductCart'); ?>" method="post" class="d-inline">
@@ -60,10 +62,10 @@
                         <hr>
                         <div class="row mt-4">
                            <div class="col-7">
-                              <span class="text-3 text-dark"><b>Jumlah barang</b></span>
+                              <span class="text-3 text-dark"><b>Jumlah Menu</b></span>
                            </div>
                            <div class="col-5 text-right">
-                              <span class="text-3">0 Barang</span>
+                              <span class="text-3">0 Menu</span>
                            </div>
                         </div>
                         <div class="row mt-3">
@@ -74,7 +76,7 @@
                               <span class="text-3"><b> Rp. 0</b></span>
                            </div>
                         </div>
-                        <button class="btn btn-primary  mt-4 btn-block font-weight-semibold btn-h-2 btn-4 h-100 BtnCheck" style="background-color: #f1f3f7; border-color:#f1f3f7; color:#78797b ;" type="submit"><span class="text-4">Checkout</span></button>
+                        <button class="btn btn-danger  mt-4 btn-block font-weight-semibold btn-h-2 btn-4 h-100 BtnCheck" style="background-color: #f1f3f7; border-color:#f1f3f7; color:#78797b ;" type="submit"><span class="text-4">Checkout</span></button>
                      </div>
                   </div>
                </div>
@@ -175,8 +177,6 @@
             const cust = $(this).data("customer");
             const price = $(this).data("price");
             const image = $(this).data("image");
-            let weight = $(this).data("weight");
-            let product_model = $(this).data("model");
             let quantity = $('#qtY' + product_id).val();
             let name = $(this).data("name");
             $.ajax({
@@ -190,8 +190,6 @@
                   price: price,
                   customer: cust,
                   image: image,
-                  model: product_model,
-                  weight: weight
                },
                success: function(result) {
                   const Toast = Swal.mixin({
@@ -242,7 +240,7 @@
 
                      Toast.fire({
                         icon: 'error',
-                        title: 'Silahkan Pilih Barang'
+                        title: 'Silahkan Pilih Menu'
                      })
                   })
                }
@@ -296,7 +294,7 @@
          })
          Toast.fire({
             icon: 'error',
-            title: 'Silahkan Pilih Barang'
+            title: 'Silahkan Pilih Menu'
          })
       })
    });

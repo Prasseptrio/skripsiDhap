@@ -104,7 +104,7 @@ input:checked+.slider:before {
 
 .checkitemBox {
     width: 30px;
-    /* margin-right: 30px; */
+    /* margin-left: 1px; */
     transform: scale(1.50);
     -webkit-transform: scale(1.50);
 }

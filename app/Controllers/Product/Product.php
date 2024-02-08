@@ -13,36 +13,21 @@ class Product extends BaseController
 	}
 	public function index()
 	{
-		$productSlug 	= $this->request->uri->getSegment(1);
-		if (!$productSlug) {
+		$productID 	= $this->request->uri->getSegment(1);
+		if (!$productID) {
 			return redirect()->to(base_url());
 		}
-		$productBySlug	= $this->productModel->getProductByProductSlug($productSlug);
-		if (!$productBySlug) {
-			$product = $this->productModel->getProductBySlug($productSlug);
-			if (!$product) {
-				return redirect()->to(base_url());
-			}
-			$productParent = $this->productModel->getProductByproductParent($product['product_parent']);
-			$productCategory = $productParent['product_category_id'];
-		} else {
-			$product = $productBySlug;
-			$productCategory = $product['product_category_id'];
-		}
-		$productID	= $product['product_id'];
-		$categories = $this->productModel->getCategoryByID($productCategory);
+		$product = $this->productModel->getProductByID($productID);
+		// dd($product);
+		$categories = $this->productModel->getCategoryByID($product['product_category']);
 
 		$data = array_merge($this->data, [
 			'title'         	=> $product['product_name'],
 			'description'   	=> $product['product_description'],
-			'keyword'   		=> $product['product_keyword'],
-			'Subproduct'		=> $this->productModel->getProductByproductParentID(productID: $productID),
+			'keyword'   		=> $product['product_name'],
 			'product'			=> $product,
 			'wishlist'			=> $this->customerModel->getWishlist(productID: $product['product_id'], customerID: session()->get('CID')),
 			'category'			=> $categories,
-			'ChildCategory'		=> $this->productModel->getCategoryByParent($categories['product_category_parent']),
-			'ProductRelated'	=> $this->productModel->getProductRelated(relatedID: $productID),
-			'ProductAttribute'	=> $this->productModel->getProductAttribute(productID: $productID),
 			'ProductReview'		=> $this->productModel->getProductReview(productID: $productID),
 			'ProductImages'		=> $this->productModel->getProductImages(productID: $productID)
 		]);
@@ -62,7 +47,7 @@ class Product extends BaseController
 			$pagination = pagination($page, number_format($totalPage), $keyword, 'search');
 		}
 		$data = array_merge($this->data, [
-			'title'         	=> "Cari Produk $keyword Termurah dan terlengkap ",
+			'title'         	=> "Cari Menu $keyword Termurah dan terlengkap ",
 			'description'   	=> "$keyword Termurah terlengkap belanja aman di Alenxi",
 			'keyword'   		=> $keyword,
 			'totalProduct'		=> $total,

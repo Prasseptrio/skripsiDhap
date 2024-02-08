@@ -26,8 +26,6 @@ class Cart extends BaseController
             'name'          => $this->request->getPost('name'),
             'image'         => $this->request->getPost('image'),
             'customer'      => $this->request->getPost('customer'),
-            'model'         => $this->request->getPost('model'),
-            'weight'        => $this->request->getPost('weight')
         ]);
         echo $this->showCart();
     }
@@ -85,8 +83,6 @@ class Cart extends BaseController
             'name'          => $this->request->getPost('name'),
             'image'         => $this->request->getPost('image'),
             'customer'      => $this->request->getPost('customer'),
-            'model'         => $this->request->getPost('model'),
-            'weight'        => $this->request->getPost('weight')
         ]);
         echo $this->showFormWishlist();
     }

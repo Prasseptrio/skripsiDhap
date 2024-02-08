@@ -23,7 +23,7 @@
                             <h5 class="card-title"><b><a href="<?= base_url($wishlist['product_slug']); ?>"><?= $wishlist['product_name'] . ' ' . $wishlist['product_model']; ?></a></b></h5>
                             <span>Model : </span><br>
                             <span class="price font-primary text-1"><b><?= $wishlist['product_model']; ?></b></span><br>
-                            <span>Stok Produk: </span><br>
+                            <span>Stok Menu: </span><br>
                             <span class="price font-primary text-1"><b><?= $wishlist['stock_status']; ?></b></span><br><br>
                             <span class="price font-primary text-4" style="position:absolute; bottom: 80px; "><strong class="text-color-primary">Rp. <?= number_format($wishlist['price']); ?></strong></span>
                         </div>

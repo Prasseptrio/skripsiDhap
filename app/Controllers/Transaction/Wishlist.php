@@ -23,16 +23,16 @@ class Wishlist extends BaseController
             $Cart = 0;
         }
         $data = array_merge($this->data, [
-            'title'                  => "Keranjang Belanja | Alenxi Technology",
-            'description'            => "Termurah terlengkap belanja aman di Alenxi",
+            'title'                  => "Keranjang Belanja",
+            'description'            => "Website Karnevor",
             'titlesub'               => "Keranjang Belanja",
             'keyword'                => "",
             'Cart'                   => $Cart,
         ]);
         $this->cart->destroy();
-        $lastSales = $this->SalesModel->getSalesOrderByLastOrder(session()->get('CID'));
+        $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
         if ($lastSales) {
-            return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['order_uuid'])));
+            return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['invoice_no'])));
         } else {
             return view('checkout/cart', $data);
         }
@@ -46,25 +46,17 @@ class Wishlist extends BaseController
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i></b> keranjang masih kosong ');
             return redirect()->to(base_url('cart'));
         }
-        $phone = $this->data['customer']['customer_telephone'];
-        if ($this->data['customerAddress'] == null && $phone == null) {
-            session()->setFlashdata('warningSwall', 'Silahkan lengkapi daftar alamat utama dan nomor telepon anda.');
-            return redirect()->to(base_url('profile'));
-        } elseif ($phone == '') {
+        $phone = $this->data['customer']['customer_whatsapp'];
+        if ($phone == '') {
             session()->setFlashdata('warningSwall', 'Silahkan lengkapi nomor telepon anda.');
-            return redirect()->to(base_url('profile'));
-        } elseif ($this->data['customerAddress'] == null) {
-            session()->setFlashdata('warningSwall', 'Silahkan lengkapi daftar alamat utama anda.');
             return redirect()->to(base_url('profile'));
         }
         $data = array_merge($this->data, [
-            'title'             => "Checkout | Alenxi Technology",
-            'description'       => " Termurah terlengkap belanja aman di Alenxi",
+            'title'             => "Checkout",
+            'description'       => "Website Karnevor",
             'titlesub'          => "Checkout",
             'keyword'           => "",
-            'Address'           => $this->customerModel->getAddress(session()->get('CID'), 1),
             'Total'             => $this->cart->total(),
-            'Courier'           => $this->SalesModel->getCourier()
         ]);
         return view('checkout/checkout', $data);
     }
@@ -75,7 +67,7 @@ class Wishlist extends BaseController
         }
         if ($this->request->getPost('resource')) {
             $this->customerModel->deleteWishlist(customerID: session()->get('CID'), productID: $this->request->getPost('productID'));
-            $addToCart    = $this->SalesModel->addToCart($this->request->getPost(null), $this->request->getPost('resource'));
+            $addToCart    = $this->SalesModel->addToCart($this->request->getPost(null));
         } else {
             $addToCart    = $this->SalesModel->addToCart($this->request->getPost(null));
         }
@@ -118,22 +110,21 @@ class Wishlist extends BaseController
         if (session()->get('isLoggedIn') != TRUE) {
             return redirect()->to(base_url('login'));
         }
-        $orderId = $this->request->getGet('inv');
-        $lastSales = $this->SalesModel->getSalesOrderLastByOrderID(base64_decode($orderId));
+        $invoice = $this->request->getGet('inv');
+        $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
         if (!$lastSales) {
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> melanjutkan transaksi ');
             return redirect()->to(base_url('transaction'));
         }
-        $salesOrder = $this->SalesModel->getSalesOrderByOrderID(base64_decode($orderId));
+        $salesOrder = $this->SalesModel->getSalesOrderByInvoice(base64_decode($invoice));
         $data = array_merge($this->data, [
-            'title'             => "Pembayaran | Alenxi Technology",
-            'description'       => " Termurah terlengkap belanja aman di Alenxi",
+            'title'             => "Pembayaran",
+            'description'       => "Website Karnevor",
             'titlesub'          => "Pembayaran",
             'keyword'           => "",
-            'Address'           => $this->customerModel->getAddress(session()->get('CID'), 1),
             'SalesOrder'        => $salesOrder,
             'SalesOrderProduct' => $this->SalesModel->getSalesOrderProductByOrderID($salesOrder['order_id']),
-            'orderID'           => base64_decode($orderId)
+            'invoice'           => base64_decode($invoice)
         ]);
         return view('checkout/agreement', $data);
     }
@@ -155,7 +146,7 @@ class Wishlist extends BaseController
         if (session()->get('isLoggedIn') != TRUE) {
             return redirect()->to(base_url('logout'));
         }
-        $orderID = $this->request->getPost('orderID');
+        $invoice = $this->request->getPost('invoice');
         if (!$this->validate([
             'PaymentFile'  => [
                 'rules'     => 'uploaded[PaymentFile]|max_size[PaymentFile,512]|is_image[PaymentFile]|mime_in[PaymentFile,image/jpg,image/jpeg,image/png]',
@@ -168,15 +159,15 @@ class Wishlist extends BaseController
             ],
         ])) {
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> melanjutkan transaksi, Foto tidak sesuai ');
-            return redirect()->to(base_url('agree?inv=' . base64_encode($orderID)))->withInput();
+            return redirect()->to(base_url('agree?inv=' . base64_encode($invoice)))->withInput();
         }
         $filePayment = $this->request->getFile('PaymentFile');
         $ext = $filePayment->guessExtension();
-        $fileName = $orderID . '.' . $ext;
+        $fileName = $invoice . '.' . $ext;
         $savePaymentProof = $this->SalesModel->savePaymentProof($this->request->getPost(null),  $fileName);
         if ($savePaymentProof) {
             $customer = $this->customerModel->getCustomerByID(session()->get('CID'));
-            $dir = APPPATH . '../' . '../' . 'assets/images/customers/' . $customer['customer_id'] . '/paymentProof/';
+            $dir = 'assets/images/customers/' . $customer['customer_id'] . '/paymentProof/';
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
@@ -187,7 +178,7 @@ class Wishlist extends BaseController
             return redirect()->to(base_url('transaction'));
         } else {
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> melanjutkan transaksi  ');
-            return redirect()->to(base_url('agree?inv=' . base64_encode($orderID)));
+            return redirect()->to(base_url('agree?inv=' . base64_encode($invoice)));
         }
     }
     public function wishlist()
@@ -219,10 +210,10 @@ class Wishlist extends BaseController
         if ($addToWishlist) {
             $ipAddress        = $this->request->getIPAddress();
             $this->customerModel->customerActivity(session()->get('CID'), 'Add To Wishlist',  session()->get('CustName'), $ipAddress);
-            session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> Memasukan produk ke wishlist');
+            session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> Memasukan Menu ke wishlist');
             return redirect()->to(base_url('') . $this->request->getPost('slug'));
         } else {
-            session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> Memasukan produk ke wishlist');
+            session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> Memasukan Menu ke wishlist');
             return redirect()->to(base_url('') . $this->request->getPost('slug'));
         }
     }
@@ -232,10 +223,10 @@ class Wishlist extends BaseController
         if ($deleteWishlist) {
             $ipAddress        = $this->request->getIPAddress();
             $this->customerModel->customerActivity(session()->get('CID'), 'Delete Wishlist',  session()->get('CustName'), $ipAddress);
-            session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> menghapus produk dari wishlist');
+            session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> menghapus Menu dari wishlist');
             return redirect()->to(base_url('wishlist'));
         } else {
-            session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> menghapus produk dari wishlist');
+            session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> menghapus Menu dari wishlist');
             return redirect()->to(base_url('wishlist'));
         }
     }

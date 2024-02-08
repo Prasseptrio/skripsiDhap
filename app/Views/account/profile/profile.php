@@ -36,8 +36,8 @@
                             <td><?= $customer['customer_email']; ?></td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">Telepon</td>
-                            <td><?= ($customer['customer_telephone']) ? $customer['customer_telephone'] : '- <br> <i class="text-muted"> Nomor telepon belum lengkap</i>'; ?></td>
+                            <td class="font-weight-bold">Nomor HP/Telepon</td>
+                            <td><?= ($customer['customer_whatsapp']) ? $customer['customer_whatsapp'] : '- <br> <i class="text-muted"> Nomor telepon belum lengkap</i>'; ?></td>
                         </tr>
 
                     </table>

@@ -5,7 +5,7 @@
                 <div class="header-column justify-content-start">
                     <div class="header-logo">
                         <a href="<?= base_url(); ?> ">
-                            <img alt="Logo Karnivor" width="250" height="48" src="<?= base_url('assets/images/brand/karnevor_logo_side.png'); ?> ">
+                            <img alt="Logo Karnevor" width="250" height="48" src="<?= base_url('assets/images/brand/karnevor_logo_side.png'); ?> ">
                         </a>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                                         foreach ($Cart as $cart) : ?>
                                             <div class="row mb-3">
                                                 <div class="col-7">
-                                                    <h2 class="text-color-default font-secondary text-1 mt-3 mb-0"><?= $cart['product_name'] . ' ' . $cart['product_model']; ?></h2>
+                                                    <h2 class="text-color-default font-secondary text-1 mt-3 mb-0"><?= $cart['product_name'] . ' '; ?></h2>
                                                     <strong class="text-color-dark">
                                                         <span class="qty"><?= $cart['quantity']; ?> x</span>
                                                         <span class="product-price">Rp. <?= number_format($cart['price']); ?></span>
@@ -41,7 +41,7 @@
                                                 </div>
                                                 <div class="col-5">
                                                     <div class="product-image">
-                                                        <img src="<?= getenv('app.assetURL') . $cart['product_image']; ?>" class="img-fluid rounded" alt="<?= $cart['product_name'] . ' ' . $cart['product_model']; ?>" />
+                                                        <img src="<?= getenv('app.assetURL') . $cart['product_image']; ?>" class="img-fluid rounded" alt="<?= $cart['product_name'] . ' '; ?>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                     <div class="mini-cart-actions">
                                         <div class="row">
                                             <div class="col pr-1">
-                                                <a href="<?= base_url('cart'); ?>" class="btn btn-primary font-weight-bold rounded text-0">Lihat Keranjang Belanja</a>
+                                                <a href="<?= base_url('cart'); ?>" class="btn btn-danger font-weight-bold rounded text-0">Lihat Keranjang Belanja</a>
                                             </div>
                                         </div>
                                     </div>

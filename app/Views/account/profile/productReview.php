@@ -20,7 +20,7 @@
                 </p>
             </div>
             <div class="col-6 text-right">
-                <h5 class="font-weight-bold text-primary text-right">AX- <?= '' . $Order['invoice_no']; ?></h5>
+                <h5 class="font-weight-bold text-primary text-right">INV- <?= '' . $Order['invoice_no']; ?></h5>
             </div>
         </div>
         <div class="product-detail ">
@@ -44,7 +44,7 @@
                                     <?php if ($Review) : ?>
                                         <label for="rating"><b>Rate yang telah diberikan:</b></label>
                                     <?php else : ?>
-                                        <label for="rating"><b>Berikan rating untuk produk :</b></label>
+                                        <label for="rating"><b>Berikan rating untuk Menu :</b></label>
                                     <?php endif ?>
                                     <input type="text" class="rating-invisible" id="Rating" name="rating" value="<?= ($Review) ? $Review['product_review_rating'] : '0'; ?>" title="" data-plugin-star-rating data-plugin-options="{<?= ($Review) ? "'displayOnly': true," : ''; ?>' containerClass': 'rating-primary', 'size':'lg'}" required>
                                 </div>

@@ -12,7 +12,7 @@
                                 <span class="old-price font-primary font-weight-semibold text-color-default text-line-trough text-4">Rp. 192.000</span>
                                 <span class="price font-primary font-weight-semibold text-color-primary text-4">Rp. 179.000</span>
                             </div> -->
-                            <a href="<?= base_url() . $bannerTopLeft['url']; ?>" class="btn btn-dark btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Produk</a>
+                            <a href="<?= base_url() . $bannerTopLeft['url']; ?>" class="btn btn-dark btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Menu</a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                                 <span class="old-price font-primary font-weight-semibold text-color-default text-line-trough text-5">Rp. 576.000</span>
                                 <span class="price font-primary font-weight-semibold text-color-primary text-5">Rp. 559.000</span>
                             </div> -->
-                            <a target="_blank" href="<?= base_url() . $bannerTopMiddle['url']; ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Produk</a>
+                            <a target="_blank" href="<?= base_url() . $bannerTopMiddle['url']; ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Menu</a>
                         </div>
                     </div>
                 </div>

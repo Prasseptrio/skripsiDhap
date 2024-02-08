@@ -1201,13 +1201,13 @@ html .steps-quaternary.steps-style-3 .item.active .item-title {
 }
 
 html .nav:not(.nav-tabs) > .nav-item > .nav-link:not(.no-skin).active {
-	color: #2388ED;
+	color: #ffff;
 }
 
 html .nav:not(.nav-tabs) > .nav-item > .nav-link:not(.no-skin):hover,
 html .nav:not(.nav-tabs) > .nav-item > .nav-link:not(.no-skin):focus,
 html .nav:not(.nav-tabs) > .nav-item > .nav-link:not(.no-skin):active {
-	color: #2388ED;
+	color: #ffff;
 }
 
 html .nav-pills-primary .nav-link.active,

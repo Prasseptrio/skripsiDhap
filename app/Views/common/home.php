@@ -10,7 +10,7 @@
                         <!-- <div class="image-frame-info image-frame-info-show flex-column align-items-start px-4 mr-2 ml-4">
                             <span class="text-1">AMAZING</span>
                             <h2 class="text-color-primary font-weight-bold font-alternative letter-spacing-n1 text-5 text-md-4 text-xl-5 mb-4">Monoblock</h2>
-                            <a href="<?= base_url('assets/images/product/package/Value Package 1.jpg'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Produk</a>
+                            <a href="<?= base_url('assets/images/product/package/Value Package 1.jpg'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Menu</a>
                         </div> -->
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                         <!-- <div class="image-frame-info image-frame-info-show flex-column align-items-start px-4 mr-2 ml-4">
                             <span class="text-1">COOL</span>
                             <h2 class="text-color-primary font-weight-bold font-alternative letter-spacing-n1 text-5 text-md-4 text-xl-5 mb-4">As Hard Chrome</h2>
-                            <a href="<?= base_url('as-hard-chrome-piston-rod-as-hard-chrome'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Produk</a>
+                            <a href="<?= base_url('as-hard-chrome-piston-rod-as-hard-chrome'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Menu</a>
                         </div> -->
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <!-- <div class="image-frame-info image-frame-info-show flex-column align-items-start px-4 mr-2 ml-4">
                             <span class="text-1">TRENDY</span>
                             <h2 class="text-color-primary font-weight-bold font-alternative letter-spacing-n1 text-5 text-md-4 text-xl-5 mb-4">Solenoid </h2>
-                            <a href="<?= base_url('c/solenoid-valve'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Produk</a>
+                            <a href="<?= base_url('c/solenoid-valve'); ?>" class="btn btn-primary btn-rounded font-weight-bold btn-h-2 btn-v-3 text-0">Lihat Menu</a>
                         </div> -->
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 <?php foreach ($LatestProducts as $latest) : ?>
                     <div class="col-sm-4 product row row-gutter-sm align-items-center mb-4">
                         <div class="col-4 col-md-12 col-lg-4">
-                            <a href="<?= base_url($latest['product_slug']); ?> ">
+                            <a href="<?= base_url($latest['product_id']); ?> ">
                                 <div class="image-frame">
                                     <div class="image-frame-wrapper">
                                         <img src="<?= getenv('app.assetURL') . $latest['product_image'] ?>" class="img-fluid" alt="<?= $latest['product_image'] ?>" style="min-height:100px; max-height:120px;">
@@ -81,8 +81,7 @@
                             </a>
                         </div>
                         <div class="col-8 col-md-12 col-lg-8 ml-md-0 ml-lg-0 pl-lg-1">
-                            <a href="<?= base_url($latest['product_slug']); ?> " class="text-color-light text-color-hover-primary text-small line-height-1"><?= $latest['product_model'] ?></a>
-                            <h3 class="text-3 font-weight-normal font-alternative mb-1"><a href="<?= base_url($latest['product_slug']); ?> " class="text-color-dark text-color-hover-primary"><?= $latest['product_model'] ?></a></h3>
+                            <h3 class="text-3 font-weight-normal font-alternative mb-1"><a href="<?= base_url($latest['product_id']); ?> " class="text-color-dark text-color-hover-primary"><?= $latest['product_name'] ?></a></h3>
                             <span class="price font-alternative text-4 ml-1">
                                 <strong class="text-color-light  font-weight-semibold">Rp.<?= number_format($latest['price'] - 1) ?> </strong>
                             </span>

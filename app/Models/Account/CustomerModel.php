@@ -15,8 +15,8 @@ class CustomerModel extends Model
 			->select('
 				customer_fullname,
 				customer_email,
-				customer_telephone,
-				address_id,
+				customer_whatsapp,
+				,
 				customer_id,
 				profile_image,
 				')
@@ -28,7 +28,7 @@ class CustomerModel extends Model
 			->select('
 				customer_fullname,
 				customer_email,
-				customer_telephone,
+				customer_whatsapp,
 				customers.customer_id,
 				profile_image,
 				password,
@@ -39,21 +39,21 @@ class CustomerModel extends Model
 			->join('customer_credential', 'customers.customer_id = customer_credential.customer_id')
 			->getWhere(['customer_email' => $email])->getRowArray();
 	}
-	public function getAddress($customerID, $profile = false)
-	{
-		if ($profile) {
-			return $this->db->table('customer_address')
-				->select('customer_address.address_id,customer_address.customer_id, customer_fullname,customer_address,customer_subdistrict,customer_city, customer_province, customer_postcode, customer_subdistrict_id, customer_city_id, customer_province_id')
-				->join('customers', 'customers.customer_id = customer_address.customer_id')
-				->orderBy('customers.address_id')
-				->getWhere(['customer_address.customer_id' => $customerID])
-				->getResultArray();
-		}
-		return $this->db->table('customers')
-			->select('customer_address.address_id,customer_address.customer_id, customer_fullname,customer_address,customer_subdistrict,customer_city, customer_province, customer_postcode, customer_subdistrict_id, customer_city_id, customer_province_id')
-			->join('customer_address', 'customers.address_id = customer_address.address_id')
-			->getWhere(['customers.customer_id' => $customerID])->getRowArray();
-	}
+	// public function getAddress($customerID, $profile = false)
+	// {
+	// 	if ($profile) {
+	// 		return $this->db->table('customer_address')
+	// 			// ->select('customer_address.,customer_address.customer_id, customer_fullname,customer_address,customer_subdistrict,customer_city, customer_province, customer_postcode, customer_subdistrict_id, customer_city_id, customer_province_id')
+	// 			->join('customers', 'customers.customer_id = customer_address.customer_id')
+	// 			->orderBy('customers.')
+	// 			->getWhere(['customer_address.customer_id' => $customerID])
+	// 			->getResultArray();
+	// 	}
+	// 	return $this->db->table('customers')
+	// 		->select('customer_address.,customer_address.customer_id, customer_fullname,customer_address,customer_subdistrict,customer_city, customer_province, customer_postcode, customer_subdistrict_id, customer_city_id, customer_province_id')
+	// 		->join('customer_address', 'customers. = customer_address.')
+	// 		->getWhere(['customers.customer_id' => $customerID])->getRowArray();
+	// }
 	function customerLogin($customerID, $customerPlatform, $CustomerUserAgent)
 	{
 		return $this->db->table('customer_login')->insert([
@@ -68,7 +68,7 @@ class CustomerModel extends Model
 		$salt 			= substr(md5(uniqid(rand(), true)), 0, 9);
 		$name			= htmlspecialchars($customer['inputName']);
 		$this->db->table('customers')->insert([
-			'address_id'			=> 0,
+			''			=> 0,
 			'customer_fullname'		=> $name,
 			'customer_email'		=> htmlspecialchars(strtolower($customer['inputEmail'])),
 			'is_active'				=> 0,
@@ -116,121 +116,11 @@ class CustomerModel extends Model
 	{
 		return $this->db->table('customers')->update([
 			'customer_fullname' => $profile['inputName'],
-			'customer_telephone' => $profile['inputTelephone'],
+			'customer_whatsapp' => $profile['inputTelephone'],
 			'updated_at'		=> time()
 		], ['customer_id' => $profile['customerID']]);
 	}
 
-	// public function addCustomerAddress($customerAddress)
-	// {
-	// 	$this->db->transBegin();
-	// 	$this->rajaongkir   = new Rajaongkir();
-	// 	$provinceID         = $customerAddress['inputProvince'];
-	// 	$cityID             = $customerAddress['inputCity'];
-	// 	$subdistrictID      = $customerAddress['inputSubdistrict'];
-	// 	$getProvince        = $this->rajaongkir->getProvince($provinceID, '');
-	// 	$provinceName       = $getProvince['province'];
-	// 	$getCity            = $this->rajaongkir->getCity($cityID, '');
-	// 	$cityName           = $getCity['type'] . ' ' . $getCity['city_name'];
-	// 	$postalCode         = $customerAddress['inputPostalcode'];
-
-	// 	if ($subdistrictID) {
-	// 		$getSubdistrict  = $this->rajaongkir->getSubdistrict($subdistrictID, '');
-	// 		$subdistrictName = $getSubdistrict['subdistrict_name'];
-	// 	} else {
-	// 		$subdistrictName = '';
-	// 	}
-	// 	$addressID = uuid();
-	// 	$this->db->table('customer_address')->insert([
-	// 		'customer_id'       		 => $customerAddress['customerID'],
-	// 		'customer_address'         	 => $customerAddress['inputAddress'],
-	// 		'customer_postcode'          => $postalCode,
-	// 		'customer_province_id'       => $provinceID,
-	// 		'customer_province'          => $provinceName,
-	// 		'customer_city_id'           => $cityID,
-	// 		'customer_city'              => $cityName,
-	// 		'customer_subdistrict_id'    => $subdistrictID,
-	// 		'customer_subdistrict'       => $subdistrictName,
-	// 	]);
-	// 	$addressID = $this->db->insertID();
-	// 	$this->db->table('customers')->update([
-	// 		'address_id' 			=> $addressID,
-	// 		'customer_fullname' 	=> $customerAddress['inputReceipent'],
-	// 		'updated_at'			=> time()
-	// 	], ['customer_id' => $customerAddress['customerID']]);
-
-	// 	if ($this->db->transStatus() === FALSE) {
-	// 		$this->db->transRollback();
-	// 		return false;
-	// 	} else {
-	// 		$this->db->transCommit();
-	// 		return true;
-	// 	}
-	// }
-	// public function updateAddress($customerAddress)
-	// {
-	// 	$this->db->transBegin();
-	// 	$this->rajaongkir   = new Rajaongkir();
-	// 	$provinceID         = $customerAddress['inputProvince'];
-	// 	$cityID             = $customerAddress['inputCity'];
-	// 	$subdistrictID      = $customerAddress['inputSubdistrict'];
-	// 	$getProvince        = $this->rajaongkir->getProvince($provinceID, '');
-	// 	$provinceName       = $getProvince['province'];
-	// 	$getCity            = $this->rajaongkir->getCity($cityID, '');
-	// 	$cityName           = $getCity['type'] . ' ' . $getCity['city_name'];
-	// 	$postalCode         = $customerAddress['inputPostalcode'];
-
-	// 	if ($subdistrictID) {
-	// 		$getSubdistrict  = $this->rajaongkir->getSubdistrict($subdistrictID, '');
-	// 		$subdistrictName = $getSubdistrict['subdistrict_name'];
-	// 	} else {
-	// 		$subdistrictName = '';
-	// 	}
-	// 	$this->db->table('customer_address')->update([
-	// 		'customer_id'       		 => $customerAddress['CustomerID'],
-	// 		'customer_address'         	 => $customerAddress['inputAddress'],
-	// 		'customer_postcode'          => $postalCode,
-	// 		'customer_province_id'       => $provinceID,
-	// 		'customer_province'          => $provinceName,
-	// 		'customer_city_id'           => $cityID,
-	// 		'customer_city'              => $cityName,
-	// 		'customer_subdistrict_id'    => $subdistrictID,
-	// 		'customer_subdistrict'       => $subdistrictName,
-	// 	], ['address_uuid' => $customerAddress['AddressID']]);
-	// 	if ($this->db->transStatus() === FALSE) {
-	// 		$this->db->transRollback();
-	// 		return false;
-	// 	} else {
-	// 		$this->db->transCommit();
-	// 		return true;
-	// 	}
-	// }
-	// public function changeCustomerMainAddress($dataAddress)
-	// {
-	// 	return $this->db->table('customers')->update([
-	// 		'address_id' 		=> $dataAddress['AddressID'],
-	// 		'updated_at'		=> time()
-	// 	], ['customer_id' => $dataAddress['customerID']]);
-	// }
-	// public function deleteAddress($dataAddress)
-	// {
-	// 	$this->db->transBegin();
-	// 	$this->db->table('customer_address')->update(['address_id' => $dataAddress['AddressID'], 'deleted_at' => time()], ['customer_id' => $dataAddress['CustomerID']]);
-	// 	$address = $this->db->table('customer_address')->where(['customer_id' => $dataAddress['CustomerID'], 'deleted_at' => null])->countAllResults();
-	// 	if ($address >= 0) {
-	// 		$addressID = $this->db->table('customer_address')->select('address_id, customer_id')->getwhere(['customer_id' => $dataAddress['CustomerID']])->getRowArray();
-	// 		$this->db->table('customers')->update(['address_id' => $addressID['address_id'], 'updated_at' => time()], ['customer_id' => $dataAddress['CustomerID']]);
-	// 	} else {
-	// 		$this->db->table('customers')->update(['address_id' => '', 'updated_at' => time()], ['customer_id' => $dataAddress['CustomerID']]);
-	// 	}
-	// 	if ($this->db->transStatus() === FALSE) {
-	// 		$this->db->transRollback();
-	// 		return false;
-	// 	} else {
-	// 		$this->db->transCommit();
-	// 		return true;
-	// 	}
-	// }
 	function resetToken($email, $token)
 	{
 		$customer = $this->db->table('customers')->getWhere(['customer_email' => $email, 'is_active' => '1'])->getRowArray();

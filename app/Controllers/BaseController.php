@@ -103,14 +103,8 @@ class BaseController extends Controller
 		}
 		if (session()->get('isLoggedIn')) {
 			$customer 			= $this->customerModel->getCustomerByID(session()->get('CID'));
-			if ($customer['address_id'] == 0) {
-				$customerAddress = [];
-			} else {
-				$customerAddress 	= $this->customerModel->getAddress(session()->get('CID'));
-			}
 		} else {
 			$customer = [];
-			$customerAddress = [];
 		}
 		$wishlist = $this->SalesModel->getCart(session()->get('CID'));
 		if ($wishlist) {
@@ -122,15 +116,14 @@ class BaseController extends Controller
 			'segment' 					=> $segment,
 			'subsegment' 				=> $subsegment,
 			'ParentCategory'			=> $this->productModel->getParentCategoryHeader(),
-			'InformationBottom'			=> $this->informationModel->getInformationBottom(),
-			'BlogFooter'				=> $this->blogModel->getBlogLimit(4),
+			// 'InformationBottom'			=> $this->informationModel->getInformationBottom(),
+			// 'BlogFooter'				=> $this->blogModel->getBlogLimit(4),
 			'Cart'						=> $cart,
 			'TotalCart'					=> $this->SalesModel->getTotalCart(session()->get('CID')),
 			'GrandTotal'				=> $this->SalesModel->getGrandTotalCart(session()->get('CID')),
 			'config_google_analytics'	=> getenv('configGoogleAnalytics.config'),
 			'validation'				=> $this->validation,
 			'customer'					=> $customer,
-			'customerAddress'			=> $customerAddress
 		];
 		date_default_timezone_set('Asia/Jakarta');
 	}

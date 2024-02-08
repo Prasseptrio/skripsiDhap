@@ -57,31 +57,30 @@ class ProductModel extends Model
 				->get()->getResultArray();
 		}
 	}
-	public function getProductByProductSlug($slug)
-	{
-		return $this->db->table('products')
-			->select('*,stock_status.stock_status AS stock_name')
-			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
-			->join('product_category', 'products.product_category = product_category.product_category_id')
-			->orderBy('product_category.sort_order')
-			->where(['products.product_slug' => $slug])
-			->get()->getRowArray();
-	}
-	public function getProductBySlug($slug)
-	{
-		return $this->db->table('products')
-			->select('*,stock_status.stock_status AS stock_name')
-			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
-			->where(['products.product_slug' => $slug, 'products.is_active' => '1'])
-			->get()->getRowArray();
-	}
+	// public function getProductByProductSlug($slug)
+	// {
+	// 	return $this->db->table('products')
+	// 		->select('*,stock_status.stock_status AS stock_name')
+	// 		->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
+	// 		->join('product_category', 'products.product_category = product_category.product_category_id')
+	// 		->orderBy('product_category.sort_order')
+	// 		->where(['products.product_id' => $slug])
+	// 		->get()->getRowArray();
+	// }
+	// public function getProductBySlug($slug)
+	// {
+	// 	return $this->db->table('products')
+	// 		->select('*,stock_status.stock_status AS stock_name')
+	// 		->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
+	// 		->where(['products.product_id' => $slug, 'products.is_active' => '1'])
+	// 		->get()->getRowArray();
+	// }
 	public function getProductByID($productID)
 	{
 		return $this->db->table('products')
-			->select('*,stock_status.stock_status AS stock_name')
 			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
-			// ->join('product_category', 'products.product_category = product_category.product_category_id')
-			// ->orderBy('product_category.sort_order')
+			->join('product_category', 'products.product_category = product_category.product_category_id')
+			->orderBy('product_category.sort_order')
 			->where(['products.product_id' => $productID, 'products.is_active' => '1'])
 			->get()->getRowArray();
 	}
@@ -99,7 +98,7 @@ class ProductModel extends Model
 			->select('*,stock_status.stock_status AS stock_name')
 			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
 			// ->join('product_category', 'products.product_category = product_category.product_category_id')
-			->where(['products.product_parent' => $productID, 'products.is_active' => '1'])
+			// ->where(['products.product_parent' => $productID, 'products.is_active' => '1'])
 			// ->orderBy('product_category.sort_order')
 			->get()->getResultArray();
 	}
@@ -124,8 +123,7 @@ class ProductModel extends Model
 							  			products.product_parent, 
 							  			products.product_category, 
 							  			products.product_name, 
-							  			products.product_model, 
-							  			products.product_slug, 
+							  			products.product_model,  
 							  			products.price, 
 							  			stock_status.stock_status AS stock_name
 							  	FROM products 
@@ -209,8 +207,6 @@ class ProductModel extends Model
 	public function getLatestProducts($limit)
 	{
 		return $this->db->table('products')
-			->select('product_slug, product_image, product_model, price,stock_status.stock_status AS stock_name')
-			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
 			->join('product_category', 'products.product_category = product_category.product_category_id')
 			->limit($limit)
 			->orderBy('products.created_at', 'DESC')
@@ -243,12 +239,12 @@ class ProductModel extends Model
 		return $BestSellerProducts;
 	}
 
-	public function getManufacturer()
-	{
-		return $this->db->table('manufacturer')
-			->select('manufacturer_image')
-			->get()->getResultArray();
-	}
+	// public function getManufacturer()
+	// {
+	// 	return $this->db->table('manufacturer')
+	// 		->select('manufacturer_image')
+	// 		->get()->getResultArray();
+	// }
 
 	public function getModule($moduleID)
 	{

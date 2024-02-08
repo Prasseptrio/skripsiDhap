@@ -7,24 +7,30 @@ use CodeIgniter\Model;
 
 class SalesModel extends Model
 {
+
 	public function getSalesOrderByLastOrder($customerID)
 	{
 		return $this->db->table('sales_order')
 			->select('sales_order.order_id, sales_order.order_uuid')
 			->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
 			->join('order_status', 'sales_order.order_status = order_status.order_status_id')
-			->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
+			// ->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
 			->getwhere(['customer_id' => $customerID, 'sales_order.created_at <=' => time(), 'sales_order.order_status' => 9])
 			->getRowArray();
 	}
-	public function getSalesOrderLastByOrderID($orderID)
+	public function getSalesOrderLastByInvoice($invoice)
 	{
 		return $this->db->table('sales_order')
 			->select('sales_order.order_id')
-			->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
 			->join('order_status', 'sales_order.order_status = order_status.order_status_id')
-			->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
-			->getwhere(['sales_order.order_uuid' => $orderID, 'sales_order.created_at <=' => time(), 'sales_order.order_status' => 9])
+			->getwhere(['sales_order.invoice_no' => $invoice, 'sales_order.created_at <=' => time(), 'sales_order.order_status' => 9])
+			->getRowArray();
+	}
+	public function getSalesOrdertByInvoice($invoice)
+	{
+		return $this->db->table('sales_order')
+			->join('order_status', 'sales_order.order_status = order_status.order_status_id')
+			->getwhere(['sales_order.invoice_no' => $invoice])
 			->getRowArray();
 	}
 	public function getOrderByCustomerId($customerID, $p = false)
@@ -35,37 +41,14 @@ class SalesModel extends Model
 		$start = 0;
 		if ($p) {
 			return $this->db->table('sales_order')
-				->select('
-			sales_order.order_id, 
-			sales_order.order_uuid, 
-			sales_order.invoice_no, 
-			order_status.order_status_name_sky, 
-			transaction_date, 
-			sales_order.total, 
-			shipping_comment, 
-			shipping_name, 
-			shipping_address, 
-			shipping_courier_service,
-			shipping_courier, 
-			shipping_province, 
-			shipping_city, 
-			shipping_subdistrict, 
-			sales_order.order_status,
-			courier_name,
-			sales_order.created_at,
-			shipping_cost
-			')
-				->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
+				->select('*,order_status.order_status_name_sky as')
 				->join('order_status', 'sales_order.order_status = order_status.order_status_id')
-				->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
 				->orderBy('sales_order.created_at', 'DESC')
 				->where(['sales_order.customer_id' => $customerID])
 				->get($perpage, $start)->getResultArray();
 		} else {
 			return $this->db->table('sales_order')
-				->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
 				->join('order_status', 'sales_order.order_status = order_status.order_status_id')
-				->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
 				->orderBy('sales_order.created_at', 'DESC')
 				->where(['customer_id' => $customerID])
 				->countAllResults();
@@ -108,10 +91,10 @@ class SalesModel extends Model
 			return 0;
 		}
 	}
-	public function addToCart($dataProduct, $resource = null)
+	public function addToCart($dataProduct)
 	{
 		$this->db->transBegin();
-		$product = $this->db->table('products')->where(['products.product_slug' => $dataProduct['productSlug']])->get()->getRowArray();
+		$product = $this->db->table('products')->where(['products.product_id' => $dataProduct['productID']])->get()->getRowArray();
 		$checkCustomer = $this->db->table('customer_cart')->getWhere(['customer_id' => $dataProduct['customerID'], 'product_id' => $product['product_id'], 'customer_cart.deleted_at' => null])->getRowArray();
 		if ($checkCustomer) {
 			$qty = $checkCustomer['quantity'] + $dataProduct['quantity'];
@@ -173,55 +156,18 @@ class SalesModel extends Model
 	}
 	public function getSalesOrderByInvoice($invoice)
 	{
-		return $this->db->table('sales_order')
-			->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
-			->getWhere(['invoice_no' => $invoice])->getRowArray();
+		return $this->db->table('sales_order')->getWhere(['invoice_no' => $invoice])->getRowArray();
 	}
-	public function getSalesOrderByOrderID($orderID)
+	public function getLastSalesOrderByCustomerID($customerID)
 	{
 		return $this->db->table('sales_order')
-			->select('
-			sales_order.order_id, 
-			sales_order.order_uuid, 
-			sales_order.invoice_no, 
-			transaction_date, 
-			sales_order.total, 
-			shipping_comment, 
-			shipping_name, 
-			shipping_address, 
-			shipping_courier_service,
-			shipping_receipt_no,
-			shipping_courier, 
-			shipping_province, 
-			shipping_city, 
-			shipping_cost, 
-			shipping_postalcode,
-			order_status_name_sky,
-			sales_order.order_status,
-			shipping_subdistrict,  
-			sales_order.created_at,
-			sales_order.payment_method,
-			courier.courier_name,
-			')
-			->join('sales_order_shipping', 'sales_order.order_id = sales_order_shipping.order_id')
-			->join('order_status', 'sales_order.order_status = order_status.order_status_id')
-			->join('courier', 'sales_order_shipping.shipping_courier = courier.courier_id')
-			->getWhere(['sales_order.order_uuid' => $orderID])->getRowArray();
+			->join('customers', 'sales_order.customer_id = customers.customer_id')
+			->getWhere(['customers.customer_id' => $customerID, 'transaction_date' => date('Y-m-d'), 'payment_status' => 0])->getRowArray();
 	}
+
 	public function getSalesOrderProductByOrderID($orderID)
 	{
 		return $this->db->table('sales_order_product')
-			->select('
-			products.product_id,
-			product_name,
-			product_model,
-			product_image,
-			order_product_name,
-			order_product_model,
-			sales_order_product.price,
-			total,
-			sales_order_product.quantity,
-			')
 			->join('products', 'sales_order_product.product_id = products.product_id')
 			->getWhere(['order_id' => $orderID])->getResultArray();
 	}
@@ -242,6 +188,17 @@ class SalesModel extends Model
 			->join('products', 'sales_order_product.product_id = products.product_id')
 			->getWhere(['order_id' => $order['order_id']])->getResultArray();
 	}
+	public function getMaxInvoice()
+	{
+		$getMax = $this->db->table('sales_order')->selectMax('order_id')->get()->getRowArray();
+		if ($getMax['order_id'] != null) {
+			$maxNumber = $getMax['order_id'];
+			$maxNumber = sprintf("%03s", $maxNumber);
+		} else {
+			$maxNumber = '001';
+		}
+		return date('dmy') . '01' . $maxNumber;
+	}
 	public function saveSalesOrder($dataCart, $dataInput, $total)
 	{
 		$this->db->transBegin();
@@ -249,62 +206,35 @@ class SalesModel extends Model
 			$this->db->transRollback();
 			return false;
 		}
-		$data =  explode("|", $dataInput['inputService']);
+		$invoice = $this->getMaxInvoice();
 		$this->db->table('sales_order')->insert([
-			'store_account_id'		=> '6',
+			'invoice_no'			=> $invoice,
 			'customer_id'			=> session()->get('CID'),
+			'service_date'			=> $dataInput['datePickup'],
+			'service_id'			=> $dataInput['inputServices'],
 			'order_status'			=> '9',
 			'payment_method'		=> '1',
 			'payment_status'		=> '0',
 			'transaction_date'		=> date('Y-m-d'),
 			'total'					=> $total,
+			'notes'					=> $dataInput['shipping_notes'],
+			'cost_delivery'			=> ($dataInput['inputServices'] == 2) ? $dataInput['CostDelivery'] : '0',
+			'created_at'			=> time()
 		]);
 		$orderId = $this->db->insertID('sales_order', 'order_id');
-		$orderUuid = $this->db->table('sales_order')->getWhere(['order_id' => $orderId])->getRowArray();
-		$customer = $this->db->table('customers')
-			->join('customer_address', 'customer_address.address_id = customers.address_id')
-			->getWhere(['customers.customer_id' => session()->get('CID')])->getRowArray();
-		$courier = $this->db->table('courier')->select('courier_id')->getWhere(['courier_code' => $dataInput['inputCourier']])->getRowArray();
-		$this->db->table('sales_order_shipping')->insert([
-			'order_id'						=> $orderId,
-			'shipping_name'					=> $customer['customer_fullname'],
-			'shipping_address'				=> $customer['customer_address'],
-			'shipping_postalcode'			=> $customer['customer_postcode'],
-			'shipping_courier'				=> $courier['courier_id'],
-			'shipping_courier_service'		=> $data[0],
-			'shipping_province'				=> $customer['customer_province'],
-			'shipping_province_id'			=> $customer['customer_province_id'],
-			'shipping_city'					=> $customer['customer_city'],
-			'shipping_city_id'				=> $customer['customer_city_id'],
-			'shipping_subdistrict'			=> $customer['customer_subdistrict'],
-			'shipping_subdistrict_id'		=> $customer['customer_subdistrict_id'],
-			'shipping_weight'				=> $dataInput['inputWeight'],
-			'shipping_cost'					=> $data[1],
-			'shipping_insurance_cost'		=> 0,
-			'shipping_receipt_no'			=> 0,
-			'shipping_comment'				=> ($dataInput['shipping_notes']) ? $dataInput['shipping_notes'] : 'tidak ada catatan',
-		]);
-
+		$customer = $this->db->table('customers')->getWhere(['customers.customer_id' => session()->get('CID')])->getRowArray();
 		foreach ($dataCart as $cart) {
-			$product = $this->db->table('products')->select('product_id,manufacturer_id,weight')->getWhere(['product_uuid' => $cart['id']])->getRowArray();
-			if ($product['manufacturer_id'] != null && $product['manufacturer_id'] = 0) {
-				$manufacturer['manufacturer_name'] = $this->db->table('manufacturer')->select('manufacturer_name')->getWhere(['manufacturer_id' => $product['manufacture_id']])->getRowArray();
-			} else {
-				$manufacturer['manufacturer_name'] = '';
-			}
+			$product = $this->db->table('products')->select('product_id')->getWhere(['product_id' => $cart['id']])->getRowArray();
 			$this->db->table('sales_order_product')->insert([
 				'order_id'					=> $orderId,
 				'product_id'				=> $product['product_id'],
 				'order_product_name'		=> $cart['name'],
-				'order_product_model'		=> $cart['model'],
-				'manufacture'				=> $manufacturer['manufacturer_name'],
 				'price'						=> $cart['price'],
 				'quantity'					=> $cart['qty'],
-				'weight'					=> $product['weight'],
 				'total'						=> $cart['subtotal'],
 				'packaging_status'			=> '0'
 			]);
-			$checkCart = $this->db->table('customer_cart')->getWhere(['customer_id' => $customer['customer_id'], 'product_id' => $product['product_id']])->getRowArray();
+			$checkCart = $this->db->table('customer_cart')->getWhere(['customer_id' => session()->get('CID'), 'product_id' => $product['product_id']])->getRowArray();
 			if ($checkCart) {
 				$this->db->table('customer_cart')->update([
 					'quantity' 		=> $cart['qty'],
@@ -320,15 +250,16 @@ class SalesModel extends Model
 		$this->db->table('sales_order_history')->insert([
 			'order_id'				=> $orderId,
 			'order_status_id'		=> '9',
-			'description'			=> 'Created Sales Order By' . $customer['customer_fullname'],
-			'created_by'			=> 'Customer'
+			'description'			=> 'Sales Created By Customer ' . $customer['customer_fullname'],
+			'created_by'			=> 'Customer',
+			'created_at'			=> time()
 		]);
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
 			return false;
 		} else {
 			$this->db->transCommit();
-			return $orderUuid['order_uuid'];
+			return $invoice;
 		}
 	}
 	public function deleteProductCart($productID)
@@ -355,8 +286,8 @@ class SalesModel extends Model
 	public function savePaymentProof($orderID, $filename)
 	{
 		$this->db->transBegin();
-		$SalesOrder = $this->db->table('sales_order')->select('order_id')->getWhere(['order_uuid' => $orderID['orderID']])->getRowArray();
-		$this->db->table('sales_order')->update(['payment_proof' => $filename, 'order_status' => 16, 'updated_at' => time()], ['order_uuid' => $orderID['orderID']]);
+		$SalesOrder = $this->db->table('sales_order')->getWhere(['invoice_no' => $orderID['invoice']])->getRowArray();
+		$this->db->table('sales_order')->update(['payment_proof' => $filename, 'payment_status' => 2, 'order_status' => 16, 'updated_at' => time()], ['invoice_no' => $orderID['invoice']]);
 		$this->db->table('sales_order_history')->insert([
 			'order_id'				=> $SalesOrder['order_id'],
 			'order_status_id'		=> 16,

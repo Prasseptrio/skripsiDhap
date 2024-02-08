@@ -33,7 +33,7 @@
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #dfcccc;">
                 <h5 class="modal-title">Ubah Biodata Diri</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -52,13 +52,13 @@
                     </div>
                     <div class="form-group">
                         <label for="inputTelephone">Nomor HP/Telepon</label>
-                        <input type="text" class="form-control form-control-sm border-grey rounded" name="inputTelephone" id="inputTelephone" aria-describedby="helpId" value="<?= $customer['customer_telephone']; ?>">
+                        <input type="text" class="form-control form-control-sm border-grey rounded" name="inputTelephone" id="inputTelephone" aria-describedby="helpId" value="<?= $customer['customer_whatsapp']; ?>">
                     </div>
 
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="background-color: #dfcccc;">
                     <button type="button" class="btn btn-light border-grey" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Ubah Data Diri</button>
+                    <button type="submit" class="btn btn-danger">Ubah Data Diri</button>
                 </div>
             </form>
         </div>

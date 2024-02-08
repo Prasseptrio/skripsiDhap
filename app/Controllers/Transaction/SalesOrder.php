@@ -27,16 +27,17 @@ class SalesOrder extends BaseController
             $page = 1;
         }
         $data = array_merge($this->data, [
-            'title'             => 'Daftar Transaksi | Alenxi Technology',
+            'title'             => 'Daftar Transaksi',
             'description'       => '',
             'keyword'           => '',
             'Rescource'         => $resource,
             'Orders'            => $this->SalesModel->getOrderByCustomerId(session()->get('CID'), $page),
             'totalTransaction'  => $this->SalesModel->getOrderByCustomerId(session()->get('CID')),
         ]);
-        $lastSales = $this->SalesModel->getSalesOrderByLastOrder(session()->get('CID'));
+        // dd($data);
+        $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
         if ($lastSales) {
-            return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['order_uuid'])));
+            return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['invoice_no'])));
         } else {
             return view('account/profile/transaction', $data);
         }
@@ -53,8 +54,8 @@ class SalesOrder extends BaseController
         if (!$resource) {
             $resource = 0;
         }
-        $orderId = $this->request->getGet('inv');
-        $salesOrder = $this->SalesModel->getSalesOrderByOrderID(base64_decode($orderId));
+        $invoice = $this->request->getGet('inv');
+        $salesOrder = $this->SalesModel->getSalesOrdertByInvoice(base64_decode($invoice));
         $data = array_merge($this->data, [
             'title'             => 'Detail Transaksi | Alenxi Technology',
             'description'       => '',
@@ -111,10 +112,10 @@ class SalesOrder extends BaseController
         if ($saveReview) {
             $ipAddress        = $this->request->getIPAddress();
             $this->customerModel->customerActivity(session()->get('CID'), 'Review Product',  session()->get('CustName'), $ipAddress);
-            session()->setFlashdata('successSwal', 'Berhasil</b> memberikan ulasan produk');
+            session()->setFlashdata('successSwal', 'Berhasil</b> memberikan ulasan Menu');
             return redirect()->to(base_url('transaction/review?inv=' . base64_encode($this->request->getPost('orderUUID'))));
         } else {
-            session()->setFlashdata('errorSwal', 'Gagal</b> memberikan ulasan produk');
+            session()->setFlashdata('errorSwal', 'Gagal</b> memberikan ulasan Menu');
             return redirect()->to(base_url('transaction/review?inv=' . base64_encode($this->request->getPost('orderUUID'))));
         }
     }

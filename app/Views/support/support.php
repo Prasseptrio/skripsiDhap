@@ -127,7 +127,7 @@
 									</div>
 									<div class="icon-box-info">
 										<div class="icon-box-info-title">
-											<h3 class="font-weight-bold text-4 mb-3">FUNGSIONAL PRODUK</h3>
+											<h3 class="font-weight-bold text-4 mb-3">FUNGSIONAL Menu</h3>
 											<?php foreach ($informasi as $i) {
 												$t = $i['category_information_id'];
 												$s = $i['status_id'];

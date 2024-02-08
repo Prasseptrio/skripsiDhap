@@ -17,7 +17,7 @@
                     <?php if ($order['order_status'] == '10') : ?>
                         <span class="badge badge-success" style="color:SeaGreen ; background-color:SpringGreen;"><?= $order['order_status_name_sky']; ?></span>
                 </p>
-                <h5 class=" font-weight-bold text-right">AX- <?= '' . $order['invoice_no']; ?></h5>
+                <h5 class=" font-weight-bold text-right">INV- <?= '' . $order['invoice_no']; ?></h5>
             <?php elseif ($order['order_status'] == '2'  || $order['order_status'] > '10' && $order['order_status'] < '15') : ?>
                 <span class="badge badge-danger" style="color:Maroon; background-color:Red;"><?= $order['order_status_name_sky']; ?></span>
                 </p>
@@ -25,7 +25,7 @@
                 <span class="badge badge-warning" style="color:GoldenRod ; background-color:LightGoldenRodYellow;"><?= $order['order_status_name_sky']; ?></span>
                 </p>
                 <?php if ($order['order_status'] == '8' || $order['order_status'] == '10') : ?>
-                    <h5 class=" font-weight-bold text-right">AX- <?= '' . $order['invoice_no']; ?></h5>
+                    <h5 class=" font-weight-bold text-right">INV- <?= '' . $order['invoice_no']; ?></h5>
                 <?php endif; ?>
             <?php endif; ?>
             </div>

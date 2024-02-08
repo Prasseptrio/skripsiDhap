@@ -10,8 +10,8 @@
                 </ul>
             </div>
             <div class="col-md-8 text-left">
-                <span class="tob-sub-title text-color-primary d-block">PENCARIAN PRODUK</span>
-                <p class="lead text-color-dark">Menampilkan hasil <b>" <?= $keyword; ?>"</b> <?= count($totalProduct); ?> produk</p>
+                <span class="tob-sub-title text-color-primary d-block">PENCARIAN Menu</span>
+                <p class="lead text-color-dark">Menampilkan hasil <b>" <?= $keyword; ?>"</b> <?= count($totalProduct); ?> Menu</p>
             </div>
         </div>
     </div>
@@ -91,17 +91,17 @@
                             <div class="product portfolio-item portfolio-item-style-2">
                                 <div class="image-frame image-frame-style-1 image-frame-effect-2 mb-3">
                                     <span class="image-frame-wrapper image-frame-wrapper-overlay-bottom image-frame-wrapper-overlay-light image-frame-wrapper-align-end">
-                                        <a href="<?= base_url($product['product_slug']); ?>">
+                                        <a href="<?= base_url($product['product_id']); ?>">
                                             <img src="<?= getenv('app.assetURL') . $product['product_image'] ?>" class="img-fluid" alt="<?= $product['product_name'] . ' ' . $product['product_model']; ?>" style="min-height:180px; max-height: 180px;">
                                         </a>
                                         <span class="image-frame-action">
-                                            <a href="<?= base_url($product['product_slug']); ?>" class="btn btn-primary btn-rounded font-weight-semibold btn-v-3 btn-fs-2">Lihat Produk</a>
+                                            <a href="<?= base_url($product['product_id']); ?>" class="btn btn-primary btn-rounded font-weight-semibold btn-v-3 btn-fs-2">Lihat Menu</a>
                                         </span>
                                     </span>
                                 </div>
                                 <div class="product-info d-flex flex-column flex-lg-row justify-content-between">
                                     <div class="product-info-title">
-                                        <h3 class="text-color-default text-2 line-height-1 mb-1"><a href="<?= base_url($product['product_slug']); ?>"><?= $product['product_name'] . ' ' . $product['product_model']; ?></a></h3>
+                                        <h3 class="text-color-default text-2 line-height-1 mb-1"><a href="<?= base_url($product['product_id']); ?>"><?= $product['product_name'] . ' ' . $product['product_model']; ?></a></h3>
                                         <span class="price font-primary text-4"><strong class="text-color-primary">Rp. <?= number_format($product['price']); ?></strong></span>
                                         <!-- <span class="old-price font-primary text-line-trough text-1"><strong class="text-color-default">$69</strong></span> -->
                                     </div>

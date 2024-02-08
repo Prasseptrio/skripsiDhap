@@ -26,16 +26,16 @@
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <h5>Total Pembayaran</h5>
-                    <h3><b>Rp. <?= number_format($SalesOrder['total'] + $SalesOrder['shipping_cost']); ?></b></h4>
+                    <h3><b>Rp. <?= number_format($SalesOrder['total'] + $SalesOrder['cost_delivery']); ?></b></h4>
                         <button type="button" class="btn btn-light mt-3" data-toggle="modal" data-target="#exampleModal">
-                            <h5 class="text-primary font-weight-bold"> Lihat Detail Pembelian</h5>
+                            <h5 class="text-danger font-weight-bold"> Lihat Detail Pembelian</h5>
                         </button>
                 </div>
             </div>
             <hr>
             <div class="text-center">
-                <a href="<?= base_url('cancelOrder?inv=' . base64_encode($orderID)); ?>" class="btn btn-outline-danger btn-3 font-weight-semibold">Batalkan Transaksi</a>
-                <button type="button" class="btn btn-primary mt-2 btn-3 font-weight-semibold mb-2 buttonPayment" data-toggle="modal" data-target="#Approval">
+                <a href="<?= base_url('cancelOrder?inv=' . base64_encode($invoice)); ?>" class="btn btn-outline-dark btn-3 font-weight-semibold">Batalkan Transaksi</a>
+                <button type="button" class="btn btn-danger mt-2 btn-3 font-weight-semibold mb-2 buttonPayment" data-toggle="modal" data-target="#Approval">
                     <span>Saya Sudah Bayar</span>
                 </button>
             </div>
@@ -47,8 +47,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-5 font-weight-semibold text-center text-primary" id="exampleModalLabel">Detail Pembelian</h5>
-                <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-5 font-weight-semibold text-center text-danger" id="exampleModalLabel">Detail Pembelian</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -60,17 +60,17 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <h5><?= $SalesOrder['shipping_address'] . ', ' . $SalesOrder['shipping_subdistrict'] . ', ' . $SalesOrder['shipping_city'] . ', ' . $SalesOrder['shipping_province'] . ' ' . '(' . $SalesOrder['shipping_postalcode'] . ')'; ?></h5>
+                        <h5><?= $SalesOrder['notes']; ?></h5>
                     </div>
                 </div>
                 <hr>
-                <h4><b>Detail Barang Yang dibeli</b></h4>
+                <h4><b>Detail Menu Yang dibeli</b></h4>
                 <div class=" table-responsive ">
                     <table class="table table-bordered shop-cart-table w-100 mt-2">
-                        <thead class="bg-primary">
+                        <thead class="bg-danger">
                             <tr>
                                 <th class="product-name font-weight-bold pr-5">
-                                    <center>Produk</center>
+                                    <center>Menu</center>
                                 </th>
                                 <th class="product-price font-weight-bold pr-5">
                                     <center>Harga</center>
@@ -86,7 +86,7 @@
                         <tbody class="">
                             <?php foreach ($SalesOrderProduct as $product) : ?>
                                 <tr class="text-center text-4 mt-2">
-                                    <td class=""><?= $product['order_product_name']; ?> <?= $product['order_product_model']; ?></td>
+                                    <td class=""><?= $product['order_product_name']; ?></td>
                                     <td class="">Rp. <?= number_format($product['price']); ?></td>
                                     <td class="text-center"><?= $product['quantity']; ?> pcs</td>
                                     <td class="text-center">Rp. <?= number_format($product['total']); ?></td>
@@ -96,7 +96,7 @@
                     </table>
                 </div>
                 <h4 class="mt-2 text-2"><b>Catatan Pembelian :</b></h4>
-                <p><span><?= $SalesOrder['shipping_comment']; ?></span></p>
+                <p><span><?= $SalesOrder['notes']; ?></span></p>
                 <hr>
                 <div class="row">
                     <div class="col-6">
@@ -116,12 +116,12 @@
                         <h5>Total Biaya Pengiriman</h5>
                     </div>
                     <div class="col-6 text-right">
-                        <h4><b>Rp. <?= number_format($SalesOrder['shipping_cost']); ?></b></h4>
+                        <h4><b>Rp. <?= number_format($SalesOrder['cost_delivery']); ?></b></h4>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary font-weight-semibold" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-outline-danger font-weight-semibold" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -130,8 +130,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-light">
-                <h5 class="modal-title text-4 text-color-primary font-weight-bold" id="exampleModalLabel">Upload Bukti Pembayaran</h5>
-                <button type="button" class="close text-color-primary font-weight-bold" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-4 text-color-danger font-weight-bold" id="exampleModalLabel">Upload Bukti Pembayaran</h5>
+                <button type="button" class="close text-color-danger font-weight-bold" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -146,14 +146,14 @@
                             <div class="invalid-feedback">
                                 <span> <?= $validation->getError('PaymentFile'); ?></span>
                             </div>
-                            <label for="FileButton" class="btn LabelImage btn-primary font-weight-semibold btn-h-2 btn-v-3" id="ChooseBtn" style=" color:white; padding :0.5rem; border-radius : 0.3rem; cursor:pointer; margin-top:1rem;">Pilih File</label>
+                            <label for="FileButton" class="btn LabelImage btn-danger font-weight-semibold btn-h-2 btn-v-3" id="ChooseBtn" style=" color:white; padding :0.5rem; border-radius : 0.3rem; cursor:pointer; margin-top:1rem;">Pilih File</label>
                             <p class="text-left mx-2 mt-2">Ukuran file gambar/foto maksimum hanya 1 mb, serta ektensi file yang diperbolehkan hanya : .JPG, .JPEG, .PNG</p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="orderID" id="IDFromOrder" value="<?= $orderID; ?>">
-                    <button type="submit" class="btn btn-outline-primary btn-h-2 btn-v-3 font-weight-bold">Kirim</button>
+                    <input type="hidden" name="invoice" id="IDFromOrder" value="<?= $invoice; ?>">
+                    <button type="submit" class="btn btn-outline-danger btn-h-2 btn-v-3 font-weight-bold">Kirim</button>
                 </div>
             </form>
         </div>
@@ -186,7 +186,7 @@
     });
 
     function pageRedirect() {
-        window.location.replace("<?= base_url('cancelOrder?inv=' . $orderID); ?>");
+        window.location.replace("<?= base_url('cancelOrder?inv=' . $invoice); ?>");
     }
 </script>
 <?= $this->endSection(); ?>
