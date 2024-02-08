@@ -1,6 +1,6 @@
 a:not(.no-skin):not(.btn):not(.badge):not(.nav-link):hover,
 a:not(.no-skin):not(.btn):not(.badge):not(.nav-link):focus {
-	color: #2388ED;
+	color: #ed153e;
 }
 
 a:not(.no-skin):not(.btn):not(.badge):not(.nav-link):hover.link-underline,
@@ -858,7 +858,7 @@ html .badge-quaternary:not(.no-skin) {
 
 .dropdown-item.active,
 .dropdown-item:active {
-	color: #2388ED;
+	color: #ed153e;
 }
 
 .list-group-item.active {
@@ -1231,7 +1231,7 @@ html .nav-pills-quaternary .show > .nav-link {
 }
 
 html .nav-tabs .nav-item .nav-link:after {
-	background-color: #2388ED;
+	background-color: #ffffff;
 }
 
 html .nav-tabs.nav-tabs-primary:not(.nav-tabs-big-icons):not(.nav-tabs-big-icons-active-colored) .nav-item .nav-link:after {

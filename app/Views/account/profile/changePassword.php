@@ -3,7 +3,7 @@
 
 <section class="section pt-2">
     <div class="container d-flex justify-content-center">
-        <div class="card card-body col-8 bg-white rounded-lg p-3" id="body">
+        <div class="card card-body col-8 rounded-lg p-3" id="body" style="background-color: #dfcccc;">
             <?= $this->include('common/alerts'); ?>
             <form action="<?= base_url('profile/sentOtp'); ?>" method="post">
                 <div class="change-password">
@@ -44,7 +44,7 @@
                     <div class="text-center" id="btn-submit">
                         <input type="hidden" name="Email" id="emailCust" value="<?= $customer['customer_email']; ?>">
                         <input type="hidden" name="customerID" id="CustomerID" value="<?= $customer['customer_id']; ?>">
-                        <button type="submit" class="btn btn-primary my-3 btn-3 font-weight-semibold" id="btnRegister" disabled>Simpan Password</button>
+                        <button type="submit" class="btn btn-danger my-3 btn-3 font-weight-semibold" id="btnRegister" disabled>Simpan Password</button>
                     </div>
                 </div>
             </form>

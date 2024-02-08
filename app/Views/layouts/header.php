@@ -74,7 +74,7 @@
                         <div class="mini-cart order-2">
                             <div class="mini-cart-icon">
                                 <button type="button" class="btn btn-outline-white inner-wrapper  font-weight-bold order-3 d-none d-sm-block text-dark mr-2 pt-1 text-2" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?= ($customer['profile_image'] != null) ?  getenv('app.assetURL') . "/images/" . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded-circle" alt="" style="width:25px; height:25px;">
+                                    <img src="<?= ($customer['profile_image'] != null) ?   "assets/images/" . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded-circle" alt="" style="width:25px; height:25px;">
                                     <small class="font-weight-bold"><?php $text = substr(session()->get('CustName'), 0, 15);
                                                                     $texCut = strrpos($text, ' ');
                                                                     echo substr(session()->get('CustName'), 0, $texCut);; ?></small>
@@ -85,7 +85,7 @@
                                     <a href="<?= base_url('profile'); ?>">
                                         <div class="row">
                                             <div class="col-4">
-                                                <img src="<?= ($customer['profile_image'] != null) ?  getenv('app.assetURL') . "/images/" . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded" alt="" style="width: 50px; height:50px;">
+                                                <img src="<?= ($customer['profile_image'] != null) ?  "assets/images/"  . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded" alt="" style="width: 50px; height:50px;">
                                             </div>
                                             <div class="col-8 mt-2">
                                                 <p class="font-weight-bold text-wrap"><?= session()->get('CustName'); ?></p>
