@@ -1,0 +1,154 @@
+/* OTP CSS */
+.num {
+    color: black;
+    background-color: transparent;
+    width: 50px;
+    text-align: center;
+    outline: none;
+    padding: 1rem;
+    margin: 0 0.5rem;
+    font-size: 20px;
+    border: 1px solid rgba(223,204,204);
+    border-radius: .2rem;
+    /* color: rgba(0, 255, 0, .5); */
+}
+
+.num:focus,
+.num:valid {
+    /* box-shadow: 0 0 .5rem rgba(0, 123, 255, 0.8),
+        inset 0 0 .5rem rgba(0, 123, 255, 0.8); */
+    border-color: rgb(43, 0, 0);
+}
+
+.auto {
+    display: block;
+    outline: none;
+    border: 0;
+    width: block;
+    height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b0b2b4;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.checkitemBox {
+    width: 30px;
+    /* margin-right: 30px; */
+    transform: scale(1.50);
+    -webkit-transform: scale(1.50);
+}
+
+#DetailTotal {
+    border: 2px solid rgb(245, 243, 243);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#loader {
+    border: 12px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 12px solid #444444;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+#loader1 {
+    border: 12px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 12px solid #444444;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 
+.center {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+} */
