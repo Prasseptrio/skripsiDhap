@@ -3,7 +3,7 @@
 <div class="container mt-3">
     <div class="row ">
         <aside class="sidebar col-md-3 col-lg-3 order-2 order-md-1 ">
-            <div class="card mb-5 rounded shadow-sm">
+            <div class="card mb-5 rounded shadow-sm bg-light">
                 <div class="card-body pt-4">
                     <div class="image-frame">
                         <img src="<?= ($customer['profile_image'] != null) ?   "assets/images/" . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded-circle mx-auto d-block" alt="" style="width: 125px; height: 125px;">
@@ -12,11 +12,9 @@
                         <h3 class="text-3 mt-3 font-weight-bold"><?= $customer['customer_fullname']; ?></h3>
                     </div>
                     <hr>
-                    <a href="<?= base_url('profile'); ?>" class="btn btn-block text-2 font-weight-semibold text-left <?= ($Rescource == 'profile') ? 'btn-rounded btn-outline-light' : ''; ?>" <?= ($Rescource == 'profile') ? ' style="pointer-events: none"' : ''; ?>>Profile</a>
+                    <a href="<?= base_url('profile'); ?>" class="btn btn-block text-2 font-weight-semibold text-left <?= ($Rescource == 'profile') ? 'btn-rounded btn-outline-danger' : ''; ?>" <?= ($Rescource == 'profile') ? ' style="pointer-events: none"' : ''; ?>>Profile</a>
                     <hr>
-                    <a href="<?= base_url('transaction'); ?>" class="btn btn-block text-2 font-weight-semibold text-left <?= ($Rescource == 'transaction') ? 'btn-rounded btn-outline-light' : ''; ?>">Daftar Transaksi</a>
-                    <hr>
-                    <a href=" <?= base_url('wishlist'); ?>" class="btn btn-block text-2 font-weight-semibold text-left">Wishlist</a>
+                    <a href="<?= base_url('transaction'); ?>" class="btn btn-block text-2 font-weight-semibold text-left <?= ($Rescource == 'transaction') ? 'btn-rounded btn-outline-danger' : ''; ?>">Daftar Transaksi</a>
                     <hr>
                     <a href=" <?= base_url('cart'); ?>" class="btn btn-block text-2 font-weight-semibold text-left">Keranjang Belanja</a>
                 </div>

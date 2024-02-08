@@ -3,7 +3,7 @@
         <div class="row text-center">
             <div class="col">
                 <a href="index.html" class="logo">
-                    <img alt="logo Karnevor" class="img-fluid max-width-150 mb-5" src="<?= base_url('assets/images/brand/karnevor_logo_side.png'); ?>">
+                    <img alt="logo Karnevor" class="img-fluid max-width-150 mb-5" style="max-height: 150px;" width="150" src="<?= base_url('assets/images/brand/karnevor_logo_side.png'); ?>">
                 </a>
             </div>
         </div>

@@ -11,7 +11,7 @@ class Home extends BaseController
 	public function index()
 	{
 		if (session()->get('CID')) {
-			$lastSales = $this->SalesModel->getSalesOrderByLastOrder(session()->get('CID'));
+			$lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
 			if ($lastSales) {
 				return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['order_uuid'])));
 			}

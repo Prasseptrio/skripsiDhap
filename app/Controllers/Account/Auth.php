@@ -66,7 +66,7 @@ class Auth extends BaseController
 				'email' 	=> base64_decode($decode->email),
 				'isLoggedIn' => TRUE
 			]);
-			$lastSales = $this->SalesModel->getSalesOrderByLastOrder(base64_decode($decode->CID));
+			$lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(base64_decode($decode->CID));
 			if ($lastSales) {
 				return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['order_uuid'])));
 			} else {

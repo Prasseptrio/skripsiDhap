@@ -96,7 +96,6 @@
                                     <a class="dropdown-item" href="<?= base_url('profile'); ?>">Akun Saya</a>
                                     <a class="dropdown-item" href="<?= base_url('transaction'); ?>">Pesanan Saya</a>
                                     <a class="dropdown-item" href="<?= base_url('cart'); ?>">Keranjang Belanja</a>
-                                    <a class="dropdown-item" href="<?= base_url('wishlist'); ?>">Wishlist</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="<?= base_url('logout'); ?>">Keluar</a>
                                 </div>
