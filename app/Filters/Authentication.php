@@ -14,28 +14,8 @@ class Authentication implements FilterInterface
 
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (session()->get('isLoggedIn') == TRUE) {
-
-            if (!isset($_COOKIE['KARNIVOR'])) {
-                return redirect()->to(base_url('logout'));
-            } else {
-                try {
-                    $jwt = $_COOKIE['KARNIVOR'];
-                    $decoded = JWT::decode($jwt, new Key(getenv('app.secretkey'), 'HS256'));
-                    $customerModel = new CustomerModel();
-                    $checkSession =   $customerModel->checkSession($decoded->jti, $decoded->email);
-                    if (!$checkSession) {
-                        return redirect()->to(base_url('logout'));
-                    }
-                    if (time() >= $decoded->exp) {
-                        return redirect()->to(base_url('logout'));
-                    }
-                } catch (\Throwable $th) {
-                    return redirect()->to(base_url('logout'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('login'));
+        if (session()->get('isLoggedIn') != TRUE) {
+            return redirect()->to(base_url('logout'));
         }
     }
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

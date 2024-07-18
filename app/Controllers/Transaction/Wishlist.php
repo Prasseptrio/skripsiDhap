@@ -72,9 +72,6 @@ class Wishlist extends BaseController
             $addToCart    = $this->SalesModel->addToCart($this->request->getPost(null));
         }
         if ($addToCart) {
-            $ipAddress  = $this->request->getIPAddress();
-            $customer   = $this->customerModel->getCustomerByID($this->request->getPost('customerID'));
-            $this->customerModel->customerActivity($customer['customer_id'], 'Add Wishlist',  $customer['customer_fullname'], $ipAddress);
             session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> barang dimasukan Keranjang ');
             return redirect()->to(base_url('cart'));
         } else {
@@ -97,8 +94,6 @@ class Wishlist extends BaseController
     {
         $saveSalesOrder = $this->SalesModel->saveSalesOrder($this->cart->contents(), $this->request->getPost(null), $this->cart->total());
         if ($saveSalesOrder) {
-            $ipAddress        = $this->request->getIPAddress();
-            $this->customerModel->customerActivity(session()->get('CID'), 'Checkout Order ' . $saveSalesOrder,  session()->get('CustName'), $ipAddress);
             return redirect()->to(base_url('agree?inv=' . base64_encode($saveSalesOrder)));
         } else {
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> melanjutkan transaksi  ');
@@ -172,8 +167,6 @@ class Wishlist extends BaseController
                 mkdir($dir, 0777, true);
             }
             $filePayment->move($dir, $fileName);
-            $ipAddress        = $this->request->getIPAddress();
-            $this->customerModel->customerActivity(session()->get('CID'), 'Upload Payment Proof',  session()->get('CustName'), $ipAddress);
             session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> upload Bukti Pembayaran, mohon tunggu konfirmasi dari kami');
             return redirect()->to(base_url('transaction'));
         } else {
@@ -208,8 +201,6 @@ class Wishlist extends BaseController
         }
         $addToWishlist = $this->customerModel->addToWishlist(customerID: session()->get('CID'), productID: $this->request->getPost('productID'),);
         if ($addToWishlist) {
-            $ipAddress        = $this->request->getIPAddress();
-            $this->customerModel->customerActivity(session()->get('CID'), 'Add To Wishlist',  session()->get('CustName'), $ipAddress);
             session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> Memasukan Menu ke wishlist');
             return redirect()->to(base_url('') . $this->request->getPost('slug'));
         } else {
@@ -221,8 +212,6 @@ class Wishlist extends BaseController
     {
         $deleteWishlist = $this->customerModel->deleteWishlist(customerID: session()->get('CID'), productID: $this->request->getPost('productID'),);
         if ($deleteWishlist) {
-            $ipAddress        = $this->request->getIPAddress();
-            $this->customerModel->customerActivity(session()->get('CID'), 'Delete Wishlist',  session()->get('CustName'), $ipAddress);
             session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> menghapus Menu dari wishlist');
             return redirect()->to(base_url('wishlist'));
         } else {

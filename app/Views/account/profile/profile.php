@@ -1,11 +1,11 @@
 <?= $this->extend('layouts/mainProfile'); ?>
 <?= $this->section('contentProfile'); ?>
-<ul class="nav nav-tabs nav-tabs-default" id="tabDefault" role="tablist">
+<ul class="nav nav-tabs nav-tabs-default" id="tabDefault" role="tablist" style="background-color: #dfcccc;">
     <li class="nav-item">
         <a class="nav-link active" id="default-profile-tab" data-toggle="tab" href="#default-profile" role="tab" aria-controls="default-profile" aria-expanded="true">Profil</a>
     </li>
 </ul>
-<div class="tab-content" id="tabDefaultContent">
+<div class="tab-content" id="tabDefaultContent" style="background-color: #dfcccc;">
     <div class="tab-pane fade show active" id="default-profile" role="tabpanel" aria-labelledby="default-profile-tab">
         <div class="row">
             <div class="col-5 mx-2">

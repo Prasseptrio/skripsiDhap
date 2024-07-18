@@ -19,8 +19,8 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <h5>Nomor Rekening Tujuan</h5>
-                    <h3 id="Rekening"><b>2468230696</b></h4>
-                        <h5 class="mb-4">a/n <b>ANDRYANSAH DEVA SATRIA</b></h5>
+                    <h3 id="Rekening"><b>123456</b></h4>
+                        <h5 class="mb-4">a/n <b>DHAPUNTA HYANG CAVALERA</b></h5>
                 </div>
             </div>
             <div class="row mt-4">

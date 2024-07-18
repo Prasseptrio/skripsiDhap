@@ -3,7 +3,7 @@
 <div class="container mt-3">
     <div class="row ">
         <aside class="sidebar col-md-3 col-lg-3 order-2 order-md-1 ">
-            <div class="card mb-5 rounded shadow-sm bg-light">
+            <div class="card mb-5 rounded shadow-sm" style="background-color: #dfcccc;">
                 <div class="card-body pt-4">
                     <div class="image-frame">
                         <img src="<?= ($customer['profile_image'] != null) ?   "assets/images/" . $customer['profile_image']  : base_url('assets/images/avatars/male.png'); ?>" class="img-fluid rounded-circle mx-auto d-block" alt="" style="width: 125px; height: 125px;">

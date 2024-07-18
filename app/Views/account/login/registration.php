@@ -69,7 +69,7 @@
                         <div class="border border-light rounded p-5">
                             <div class="row mb-2">
                                 <div class="col-sm-6 mt-2">
-                                    <span class="top-sub-title ">Butuh Bantuan? <a href="mailto:<?= getenv('SMTPUser.config'); ?>" class="text-color-light">Hubungi Kami</a> </span>
+                                    <span class="top-sub-title ">Butuh Bantuan? <a href="https://wa.me/085869948016" class="text-color-light">Hubungi Kami</a> </span>
                                 </div>
                                 <div class="col-sm-6 text-right">
                                     <a href="<?= base_url(); ?> ">

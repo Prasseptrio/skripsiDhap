@@ -28,8 +28,8 @@ class Product extends BaseController
 			'product'			=> $product,
 			'wishlist'			=> $this->customerModel->getWishlist(productID: $product['product_id'], customerID: session()->get('CID')),
 			'category'			=> $categories,
-			'ProductReview'		=> $this->productModel->getProductReview(productID: $productID),
-			'ProductImages'		=> $this->productModel->getProductImages(productID: $productID)
+			// 'ProductReview'		=> $this->productModel->getProductReview(productID: $productID),
+			// 'ProductImages'		=> $this->productModel->getProductImages(productID: $productID)
 		]);
 		return view('product/product', $data);
 	}
@@ -47,8 +47,8 @@ class Product extends BaseController
 			$pagination = pagination($page, number_format($totalPage), $keyword, 'search');
 		}
 		$data = array_merge($this->data, [
-			'title'         	=> "Cari Menu $keyword Termurah dan terlengkap ",
-			'description'   	=> "$keyword Termurah terlengkap belanja aman di Alenxi",
+			'title'         	=> "Cari Menu $keyword Indonesia #1 Halal Homeservice Yakiniku and Suki ",
+			'description'   	=> "$keyword Indonesia #1 Halal Homeservice Yakiniku and Suki",
 			'keyword'   		=> $keyword,
 			'totalProduct'		=> $total,
 			'pagination'		=> $pagination,

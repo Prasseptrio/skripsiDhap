@@ -201,7 +201,7 @@ class SalesModel extends Model
 	}
 	public function saveSalesOrder($dataCart, $dataInput, $total)
 	{
-		$this->db->transBegin();
+		// $this->db->transBegin();
 		if ($dataCart == 0) {
 			$this->db->transRollback();
 			return false;
@@ -210,8 +210,6 @@ class SalesModel extends Model
 		$this->db->table('sales_order')->insert([
 			'invoice_no'			=> $invoice,
 			'customer_id'			=> session()->get('CID'),
-			'service_date'			=> $dataInput['datePickup'],
-			'service_id'			=> $dataInput['inputServices'],
 			'order_status'			=> '9',
 			'payment_method'		=> '1',
 			'payment_status'		=> '0',
@@ -225,6 +223,7 @@ class SalesModel extends Model
 		$customer = $this->db->table('customers')->getWhere(['customers.customer_id' => session()->get('CID')])->getRowArray();
 		foreach ($dataCart as $cart) {
 			$product = $this->db->table('products')->select('product_id')->getWhere(['product_id' => $cart['id']])->getRowArray();
+
 			$this->db->table('sales_order_product')->insert([
 				'order_id'					=> $orderId,
 				'product_id'				=> $product['product_id'],
@@ -232,7 +231,8 @@ class SalesModel extends Model
 				'price'						=> $cart['price'],
 				'quantity'					=> $cart['qty'],
 				'total'						=> $cart['subtotal'],
-				'packaging_status'			=> '0'
+				'packaging_status'			=> '0',
+
 			]);
 			$checkCart = $this->db->table('customer_cart')->getWhere(['customer_id' => session()->get('CID'), 'product_id' => $product['product_id']])->getRowArray();
 			if ($checkCart) {
@@ -246,14 +246,6 @@ class SalesModel extends Model
 				]);
 			}
 		}
-
-		$this->db->table('sales_order_history')->insert([
-			'order_id'				=> $orderId,
-			'order_status_id'		=> '9',
-			'description'			=> 'Sales Created By Customer ' . $customer['customer_fullname'],
-			'created_by'			=> 'Customer',
-			'created_at'			=> time()
-		]);
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
 			return false;

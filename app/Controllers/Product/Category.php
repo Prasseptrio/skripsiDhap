@@ -20,7 +20,7 @@ class Category extends BaseController
 		$data = array_merge($this->data, [
 			'title'         	=> $category['product_category_name'],
 			'description'   	=> $category['product_category_description'],
-			'keyword'   		=> $category['product_category_keyword'],
+			'keyword'   		=> $category['product_category_slug'],
 			'ProductCategory'	=> $this->productModel->getProductByCategory($categoryID),
 			'ProductByParent'	=> $this->productModel->getProductByParentCategory($categoryID),
 			'category'			=> $category,

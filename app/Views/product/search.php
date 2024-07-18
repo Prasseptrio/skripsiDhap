@@ -22,7 +22,7 @@
     <div class="row">
         <aside class="sidebar col-md-4 col-lg-3 order-2 order-md-1">
             <div class="accordion accordion-default accordion-toggle accordion-style-1" role="tablist">
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header accordion-header" role="tab" id="categories">
                         <h5 class="mb-0">
                             <a href="#" data-toggle="collapse" data-target="#toggleCategories" aria-expanded="false" aria-controls="toggleCategories">KATEGORI</a>
@@ -31,13 +31,13 @@
                     <div id="toggleCategories" class="accordion-body collapse show" role="tabpanel" aria-labelledby="categories">
                         <div class="card-body">
                             <ul class="list list-unstyled mb-0">
-                                <?php foreach ($ParentCategory as $childCategory) : ?>
-                                    <li><a href="<?= base_url('search?q=' . $childCategory['product_category_name']); ?>"><?= $childCategory['product_category_name']; ?></a></li>
-                                <?php endforeach; ?>
+                                </?php foreach ($ParentCategory as $childCategory) : ?>
+                                    <li><a href="</?= base_url('search?q=' . $childCategory['product_category_name']); ?>"></?= $childCategory['product_category_name']; ?></a></li>
+                                </?php endforeach; ?>
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="card">
                     <div class="card-header accordion-header" role="tab" id="brands">
@@ -92,7 +92,7 @@
                                 <div class="image-frame image-frame-style-1 image-frame-effect-2 mb-3">
                                     <span class="image-frame-wrapper image-frame-wrapper-overlay-bottom image-frame-wrapper-overlay-light image-frame-wrapper-align-end">
                                         <a href="<?= base_url($product['product_id']); ?>">
-                                            <img src="<?= getenv('app.assetURL') . $product['product_image'] ?>" class="img-fluid" alt="<?= $product['product_name'] . ' ' . $product['product_model']; ?>" style="min-height:180px; max-height: 180px;">
+                                            <img src="<?= getenv('app.assetURL') . $product['product_image'] ?>" class="img-fluid" alt="<?= $product['product_name'] . ' '; ?>" style="min-height:180px; max-height: 180px;">
                                         </a>
                                         <span class="image-frame-action">
                                             <a href="<?= base_url($product['product_id']); ?>" class="btn btn-primary btn-rounded font-weight-semibold btn-v-3 btn-fs-2">Lihat Menu</a>
@@ -101,8 +101,8 @@
                                 </div>
                                 <div class="product-info d-flex flex-column flex-lg-row justify-content-between">
                                     <div class="product-info-title">
-                                        <h3 class="text-color-default text-2 line-height-1 mb-1"><a href="<?= base_url($product['product_id']); ?>"><?= $product['product_name'] . ' ' . $product['product_model']; ?></a></h3>
-                                        <span class="price font-primary text-4"><strong class="text-color-primary">Rp. <?= number_format($product['price']); ?></strong></span>
+                                        <h3 class="text-color-default text-2 line-height-1 mb-1"><a class="text-light" href="<?= base_url($product['product_id']); ?>"><?= $product['product_name'] . ' '; ?> </a></h3>
+                                        <span class="price font-primary text-4"><strong class="text-color-dark">Rp. <?= number_format($product['price']); ?></strong></span>
                                         <!-- <span class="old-price font-primary text-line-trough text-1"><strong class="text-color-default">$69</strong></span> -->
                                     </div>
                                 </div>

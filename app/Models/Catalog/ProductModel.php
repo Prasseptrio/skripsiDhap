@@ -14,7 +14,6 @@ class ProductModel extends Model
 				->get()->getRowArray();
 		}
 		return $this->db->table('product_category')
-			->select('product_category_slug,product_category_name, product_category_parent, product_category_id')
 			->where(['product_category_top' => '1'])
 			->orderBy('product_category.sort_order')
 			->get()->getResultArray();
@@ -41,7 +40,7 @@ class ProductModel extends Model
 	public function getCategoryByParent($parent)
 	{
 		return $this->db->table('product_category')
-			->select('product_category_slug,product_category_name,product_category_image')
+			->select(',product_category_name,product_category_image')
 			->orderBy('sort_order')
 			->where(['product_category_parent' => $parent])
 			->get()->getResultArray();
@@ -57,28 +56,9 @@ class ProductModel extends Model
 				->get()->getResultArray();
 		}
 	}
-	// public function getProductByProductSlug($slug)
-	// {
-	// 	return $this->db->table('products')
-	// 		->select('*,stock_status.stock_status AS stock_name')
-	// 		->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
-	// 		->join('product_category', 'products.product_category = product_category.product_category_id')
-	// 		->orderBy('product_category.sort_order')
-	// 		->where(['products.product_id' => $slug])
-	// 		->get()->getRowArray();
-	// }
-	// public function getProductBySlug($slug)
-	// {
-	// 	return $this->db->table('products')
-	// 		->select('*,stock_status.stock_status AS stock_name')
-	// 		->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
-	// 		->where(['products.product_id' => $slug, 'products.is_active' => '1'])
-	// 		->get()->getRowArray();
-	// }
 	public function getProductByID($productID)
 	{
 		return $this->db->table('products')
-			->join('stock_status', 'products.stock_status_id = stock_status.stock_status_id')
 			->join('product_category', 'products.product_category = product_category.product_category_id')
 			->orderBy('product_category.sort_order')
 			->where(['products.product_id' => $productID, 'products.is_active' => '1'])
@@ -118,42 +98,25 @@ class ProductModel extends Model
 		$perpage = 12;
 		$page = ($p) ? $p : 1;
 		$start = ($page > 1) ? ((int)$page * $perpage) - $perpage : 0;
-		return  $this->db->query("SELECT 
-							  			products.product_image, 
-							  			products.product_parent, 
-							  			products.product_category, 
-							  			products.product_name, 
-							  			products.product_model,  
-							  			products.price, 
-							  			stock_status.stock_status AS stock_name
+		return  $this->db->query("SELECT *
 							  	FROM products 
-							  	LEFT OUTER JOIN stock_status ON products.stock_status_id = stock_status.stock_status_id
 							  	WHERE
 							  		(
-										   products.product_keyword ~* '$keyword'  
-							  			OR products.product_name ~* '$keyword'
-							  			OR products.product_description ~* '$keyword'
-							  			OR products.product_model ~* '$keyword'
+							  			products.product_name like '%$keyword%'
+							  			OR products.product_description like '%$keyword%'
 							  		)
-							  	AND products.price > '0'
-								AND products.product_image > '0'
 								AND products.is_active = '1'
 								LIMIT $perpage OFFSET $start")
 			->getResultArray();
 	}
 	public function totalFindProduct($keyword)
 	{
-		return $this->db->query("SELECT  
-							  			products.product_model, 
-							  			stock_status.stock_status AS stock_name
+		return $this->db->query("SELECT  *
 							  	FROM products 
-							  	LEFT OUTER JOIN stock_status ON products.stock_status_id = stock_status.stock_status_id
 							  	WHERE
 							  		(
-										   products.product_keyword ~* '$keyword'  
-							  			OR products.product_name ~* '$keyword'
-							  			OR products.product_description ~* '$keyword'
-							  			OR products.product_model ~* '$keyword'
+							  			products.product_name like '%$keyword%'
+							  			OR products.product_description like '%$keyword%'
 							  		)
 							  	AND products.price > '0'
 								AND products.is_active = '1' ")
@@ -179,6 +142,7 @@ class ProductModel extends Model
 	}
 	public function getProductByParentCategory($categoryID)
 	{
+
 		return $this->db->table('products')
 			->join('product_category', 'products.product_category = product_category.product_category_id')
 			->orderBy('product_category.sort_order')
@@ -198,12 +162,6 @@ class ProductModel extends Model
 	{
 		return $this->db->table('product_image')->where(['product_id' => $productID])->orderBy('sort_order', 'ASC')->get()->getResultArray();
 	}
-
-	public function getProductReview($productID)
-	{
-		return $this->db->table('product_review')->getWhere(['product_review_product_id' => $productID])->getResultArray();
-	}
-
 	public function getLatestProducts($limit)
 	{
 		return $this->db->table('products')
@@ -239,12 +197,6 @@ class ProductModel extends Model
 		return $BestSellerProducts;
 	}
 
-	// public function getManufacturer()
-	// {
-	// 	return $this->db->table('manufacturer')
-	// 		->select('manufacturer_image')
-	// 		->get()->getResultArray();
-	// }
 
 	public function getModule($moduleID)
 	{
@@ -257,8 +209,4 @@ class ProductModel extends Model
 		$moduleData = unserialize($module['setting']);
 		return $moduleData['product'];
 	}
-	// public function getOrderBySearch($customerID, $keyword)
-	// {
-	// 	return $this->db->table('sales_order');
-	// }
 }

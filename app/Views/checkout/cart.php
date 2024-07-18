@@ -14,7 +14,7 @@
                      <?php krsort($Cart);
                      foreach ($Cart as $cart) : ?>
                         <div class="input-button">
-                           <input class="form-check-input checkitemBox mr-2" type="checkbox" id="CheckBox<?= $cart['product_id']; ?>" data-id="<?= $cart['product_id']; ?>" data-name="<?= $cart['product_name']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>" data-image="<?= $cart['product_image']; ?>" data-customer="<?= $customer['customer_id']; ?>">
+                           <input class="form-check-input checkitemBox mr-2" type="checkbox" id="CheckBox<?= $cart['product_id']; ?>" data-id="<?= $cart['product_id']; ?>" data-name="<?= $cart['product_name']; ?>" data-price="<?= $cart['price']; ?>" data-image="<?= $cart['product_image']; ?>" data-customer="<?= $customer['customer_id']; ?>">
                         </div>
                         <div class="detail-cart mb-3">
                            <div class="row justify-content-center">
@@ -36,9 +36,9 @@
                            <div class="row mt-3">
                               <div class="col-5 d-flex justify-content-end">
                                  <div class="quantity">
-                                    <input type="button" value="-" class="minus QunatitY rounded" id="Minus<?= $cart['product_id']; ?>" <?= ($cart['quantity'] <= 1) ? 'disabled' : ''; ?> data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
-                                    <input type="number" step="1" min="1" name="quantity" value="<?= $cart['quantity'] ?>" id="qtY<?= $cart['product_id']; ?>" title="Qty" class="qty inputQuantity" size="2" data-sku="<?= $cart['product_sku']; ?>" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>">
-                                    <input type="button" value="+" class="plus PLUS rounded" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>" data-sku="<?= $cart['product_sku']; ?>">
+                                    <input type="button" value="-" class="minus QunatitY rounded" id="Minus<?= $cart['product_id']; ?>" <?= ($cart['quantity'] <= 1) ? 'disabled' : ''; ?> data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>">
+                                    <input type="number" step="1" min="1" name="quantity" value="<?= $cart['quantity'] ?>" id="qtY<?= $cart['product_id']; ?>" title="Qty" class="qty inputQuantity" size="2" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>">
+                                    <input type="button" value="+" class="plus PLUS rounded" data-id="<?= $cart['product_id']; ?>" data-price="<?= $cart['price']; ?>">
                                  </div>
                               </div>
                               <div class="col-5 text-right">

@@ -80,12 +80,9 @@ class BaseController extends Controller
 		$this->cart 				= \Config\Services::cart();
 
 		$this->productModel  		= new ProductModel();
-		$this->informationModel  	= new InformationModel();
-		$this->blogModel  			= new BlogModel();
 		$this->customerModel  		= new CustomerModel();
 		$this->rajaongkir 			= new Rajaongkir();
 		$this->SalesModel			= new SalesModel();
-		$this->BannerModel			= new BannerModel();
 
 
 		$emailConfig = [

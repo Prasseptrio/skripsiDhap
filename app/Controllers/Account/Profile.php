@@ -41,8 +41,6 @@ class Profile extends BaseController
 			if ($updateProfile) {
 				session()->remove('CustName');
 				session()->set('CustName', $customer['customer_fullname']);
-				$ipAddress        = $this->request->getIPAddress();
-				$this->customerModel->customerActivity($customer['customer_id'], 'Update Profile',  $customer['customer_fullname'], $ipAddress);
 				session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Data diri berhasil diperbarui ');
 				return redirect()->to(base_url('profile'));
 			} else {
@@ -147,8 +145,6 @@ class Profile extends BaseController
 				mkdir($dir, 0777, true);
 			}
 			$fileProfilePicture->move($dir, $fileName);
-			$ipAddress        = $this->request->getIPAddress();
-			$this->customerModel->customerActivity(session()->get('CID'), 'Change Profile Picture', session()->get('CustName'), $ipAddress);
 			session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> Ubah Foto Profile ');
 			return redirect()->to(base_url('profile'));
 		} else {
