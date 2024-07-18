@@ -34,7 +34,6 @@ class CustomerModel extends Model
 				password,
 				salt,
 				token,
-				is_active
 				')
 			->join('customer_credential', 'customers.customer_id = customer_credential.customer_id')
 			->getWhere(['customer_email' => $email])->getRowArray();
@@ -68,11 +67,8 @@ class CustomerModel extends Model
 		$salt 			= substr(md5(uniqid(rand(), true)), 0, 9);
 		$name			= htmlspecialchars($customer['inputName']);
 		$this->db->table('customers')->insert([
-			''			=> 0,
 			'customer_fullname'		=> $name,
 			'customer_email'		=> htmlspecialchars(strtolower($customer['inputEmail'])),
-			'is_active'				=> 0,
-			'is_verified'			=> 1,
 			'created_at'			=> time()
 		]);
 		$customerID = $this->db->insertID();

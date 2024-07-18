@@ -27,13 +27,13 @@ class Auth extends BaseController
 			$salt		= $customer['salt'];
 			$password 	= sha1($salt . sha1($salt . sha1($this->request->getPost('inputPassword'))));
 			if ($password == $customer['password']) {
-				if ($customer['is_active'] == 1) {
-					JsonWebToken::customerSignatureEncode($customer);
-					return $this->loadingPreview();
-				} else {
-					session()->setFlashdata('warning', '<b><i class="fas fa-exclamation-triangle"></i> Akun Belum diverifikasi!</b> <br>  Silahkan Cek Email Anda Untuk Verifikasi Akun.');
-					return redirect()->to(base_url('login'));
-				}
+				$this->session->set([
+					'CustName'	=> $customer['customer_fullname'],
+					'CID' 		=> $customer['customer_id'],
+					'email' 	=> $customer['customer_email'],
+					'isLoggedIn' => TRUE
+				]);
+				return redirect()->to(base_url(''));
 			} else {
 				session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Password yang Anda masukkan salah! ');
 				return redirect()->to(base_url('login'));
@@ -43,42 +43,9 @@ class Auth extends BaseController
 			return redirect()->to(base_url('login'));
 		}
 	}
-	public function loadingPreview()
-	{
-		$decode = JsonWebToken::signatureDecode();
-		if (!$decode) {
-			return view('account/login/loginLoading');
-		} else {
-			$agent = $this->request->getUserAgent();
-			if ($agent->isBrowser()) {
-				$currentAgent = $agent->getBrowser() . ' ' . $agent->getVersion();
-			} elseif ($agent->isRobot()) {
-				$currentAgent = $agent->getRobot();
-			} elseif ($agent->isMobile()) {
-				$currentAgent = $agent->getMobile();
-			} else {
-				$currentAgent = 'Unidentified User Agent';
-			}
-			$this->customerModel->customerLogin(base64_decode($decode->CID), $agent->getPlatform(),  $currentAgent);
-			$this->session->set([
-				'CustName'	=> base64_decode($decode->CustName),
-				'CID' 		=> base64_decode($decode->CID),
-				'email' 	=> base64_decode($decode->email),
-				'isLoggedIn' => TRUE
-			]);
-			$lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(base64_decode($decode->CID));
-			if ($lastSales) {
-				return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['order_uuid'])));
-			} else {
-				return redirect()->to(base_url(''));
-			}
-		}
-	}
+
 	public function logout()
 	{
-		$ipAddress		= $this->request->getIPAddress();
-		$this->customerModel->customerActivity(session()->get('CID'), 'logout',  session()->get('CustName'), $ipAddress);
-		setcookie('KARNIVOR', 'LOGOUT');
 		$this->cart->destroy();
 		$this->session->destroy();
 		return redirect()->to(base_url('login'));
@@ -129,38 +96,7 @@ class Auth extends BaseController
 			return redirect()->to(base_url('forgotPassword'));
 		}
 	}
-	public function inputOTP()
-	{
-		$data = array_merge($this->data, [
-			'title'         => 'Pengisian OTP Website Karnivor.id',
-			'description'   => '',
-			'keyword'   	=> '',
-		]);
-		return view('account/login/otp', $data);
-	}
 
-	public function checkOtp()
-	{
-		$dataOtp = $this->request->getPost(null);
-		$dataOtp = $dataOtp[1] . $dataOtp[2] .  $dataOtp[3] .  $dataOtp[4] .  $dataOtp[5] .  $dataOtp[6];
-		$customer = $this->customerModel->getCustomerByEmail(session()->get('email'));
-		if ($dataOtp == base64_decode(session()->get('otp'))) {
-			$this->email->setFrom(getenv('configEmail.setting'), getenv('configName.setting'));
-			$this->email->setTo(session()->get('email'));
-			$this->email->setSubject('Reset Password');
-			$this->email->setMessage(view('email/successResetPassword', ['email' => session()->get('email'), 'fullname' => $customer['customer_fullname']]));
-			if ($this->email->send()) {
-				session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Kode Otp benar!</b> <br> Silahkan isikan password baru anda! ');
-				return redirect()->to(base_url('recover'));
-			} else {
-				session()->setFlashdata('error', '<b><i class="fas fa-check-circle"></i> Kode Otp yang anda masukan salah');
-				return redirect()->to(base_url('otp'));
-			}
-		} else {
-			session()->setFlashdata('error', '<b><i class="fas fa-check-circle"></i> Kode Otp yang anda masukan salah</b> <br> ');
-			return redirect()->to(base_url('otp'));
-		}
-	}
 	public function recover()
 	{
 		$email = session()->get('email');

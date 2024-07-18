@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3">
-                                    <div class="form-group col">
+                                    <div class="form-group col text-color-dark">
                                         Belum punya akun ? <a href="<?= base_url('register'); ?> " class="forgot-pw  text-color-light"> Daftar</a>
                                     </div>
                                     <div class="form-group col text-right">
