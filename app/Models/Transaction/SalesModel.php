@@ -284,14 +284,7 @@ class SalesModel extends Model
 	{
 		$this->db->transBegin();
 		$SalesOrder = $this->db->table('sales_order')->getWhere(['invoice_no' => $orderID['invoice']])->getRowArray();
-		$this->db->table('sales_order')->update(['payment_proof' => $filename, 'payment_status' => 2, 'order_status' => 16, 'updated_at' => time()], ['invoice_no' => $orderID['invoice']]);
-		$this->db->table('sales_order_history')->insert([
-			'order_id'				=> $SalesOrder['order_id'],
-			'order_status_id'		=> 16,
-			'description'			=> 'Uploaded Payment Proof Sales Order',
-			'created_at'			=> time(),
-			'created_by'			=> 'Customer'
-		]);
+		$this->db->table('sales_order')->update(['payment_proof' => $filename, 'payment_status' => 2, 'order_status' => 1, 'updated_at' => time()], ['invoice_no' => $orderID['invoice']]);
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
 			return false;
@@ -302,7 +295,7 @@ class SalesModel extends Model
 	}
 	public function cancelOrder($orderID)
 	{
-		// $this->db->transBegin();
+		$this->db->transBegin();
 		$order = $this->db->table('sales_order')->getWhere(['invoice_no' => $orderID])->getRowArray();
 		$this->db->table('sales_order')->update(['order_status' => '11', 'void_reason' => 'cancel order', 'void_at' => date('Y-m-d'), 'updated_at' => time()], ['order_id' => $order['order_id']]);
 		if ($this->db->transStatus() === false) {
@@ -316,19 +309,12 @@ class SalesModel extends Model
 	public function checkOutOftime($customerID)
 	{
 		$this->db->transBegin();
-		$dataSalesOrder = $this->db->table('sales_order')->select('created_at, order_id, order_status, invoice_no')->getWhere(['customer_id' => $customerID, 'order_status !=' => 'd03ceb2a-8477-4a8c-93a5-027a09062167', 'order_status !=' => '13b4173e-cc9f-4d3b-a822-dfcd8e7d62aa', 'order_status !=' => 'd03ceb2a-8477-4a8c-93a5-027a09062167'])->getResultArray();
+		$dataSalesOrder = $this->db->table('sales_order')->select('created_at, order_id, order_status, invoice_no')->getWhere(['customer_id' => $customerID, 'order_status' => '9',])->getResultArray();
 		foreach ($dataSalesOrder as $salesOrder) {
 			$date = strtotime("+1 hours", $salesOrder['created_at']);
 			$now = time();
 			if ($now >= $date) {
 				$this->db->table('sales_order')->update(['order_status' => 15, 'updated_at' => time()], ['invoice_no' => $salesOrder['invoice_no']]);
-				$this->db->table('sales_order_history')->insert([
-					'order_id'				=> $salesOrder['order_id'],
-					'order_status_id'		=> 15,
-					'description'			=> 'Out Of time Sales Order',
-					'created_at'			=> time(),
-					'created_by'			=> 'Customer'
-				]);
 			}
 		}
 		if ($this->db->transStatus() === false) {
@@ -341,7 +327,7 @@ class SalesModel extends Model
 	}
 	public function productReceived($orderID)
 	{
-		return $this->db->table('sales_order')->update(['order_status' => 8], ['order_uuid' => $orderID]);
+		return $this->db->table('sales_order')->update(['order_status' => 8], ['order_id' => $orderID]);
 	}
 	function getReview($orderID, $productID)
 	{
