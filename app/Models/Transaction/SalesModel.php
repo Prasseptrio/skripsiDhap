@@ -221,6 +221,7 @@ class SalesModel extends Model
 			'total'					=> $total,
 			'notes'					=> $dataInput['shipping_notes'],
 			'cost_delivery'			=> ($dataInput['inputServices'] == 2) ? $dataInput['CostDelivery'] : '0',
+			'type'					=> 2,
 			'created_at'			=> time()
 		]);
 		$orderId = $this->db->insertID('sales_order', 'order_id');
