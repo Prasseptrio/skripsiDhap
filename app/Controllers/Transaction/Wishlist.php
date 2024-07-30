@@ -50,9 +50,11 @@ class Wishlist extends BaseController
         $address = $this->data['customer']['address'];
         if ($phone == '') {
             session()->setFlashdata('warningSwall', 'Silahkan lengkapi nomor telepon anda.');
+            return redirect()->to(base_url('profile'));
         }
         if ($address == '') {
             session()->setFlashdata('warningSwall', 'Silahkan lengkapi Alamat Rumah anda.');
+            return redirect()->to(base_url('profile'));
         }
         $data = array_merge($this->data, [
             'title'             => "Checkout",
