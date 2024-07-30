@@ -21,8 +21,12 @@ class Profile extends BaseController
 			return redirect()->to(base_url('login'));
 		}
 		$phone = $this->data['customer']['customer_whatsapp'];
+		$address = $this->data['customer']['address'];
 		if ($phone == '') {
 			session()->setFlashdata('warningSwall', 'Silahkan lengkapi nomor telepon anda.');
+		}
+		if ($address == '') {
+			session()->setFlashdata('warningSwall', 'Silahkan lengkapi Alamat Rumah anda.');
 		}
 		$data = array_merge($this->data, [
 			'title'         => 'Akun Saya Website Karnivor',
@@ -52,67 +56,7 @@ class Profile extends BaseController
 			return redirect()->to(base_url('profile'));
 		}
 	}
-	// public function addCustomerAddress()
-	// {
-	// 	$addCustomerAddress = $this->customerModel->addCustomerAddress($this->request->getPost());
-	// 	if ($addCustomerAddress) {
-	// 		$ipAddress        = $this->request->getIPAddress();
-	// 		$this->customerModel->customerActivity(session()->get('CID'), 'Customer Address Add', session()->get('CustName'), $ipAddress);
-	// 		session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Alamat berhasil ditambahkan ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	} else {
-	// 		session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Alamat gagal ditambahkan! ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	}
-	// }
-	// public function updateAddress()
-	// {
-	// 	$updateAddress = $this->customerModel->updateAddress($this->request->getPost());
-	// 	if ($updateAddress) {
-	// 		$ipAddress        = $this->request->getIPAddress();
-	// 		$this->customerModel->customerActivity(session()->get('CID'), 'Customer Address Update', session()->get('CustName'), $ipAddress);
-	// 		session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Alamat berhasil diubah ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	} else {
-	// 		session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Alamat gagal diubah! ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	}
-	// }
-	// public function changeCustomerMainAddress()
-	// {
-	// 	$changeCustomerMainAddress = $this->customerModel->changeCustomerMainAddress($this->request->getPost());
-	// 	if ($this->request->getPost('param') == 1) {
-	// 		if ($changeCustomerMainAddress) {
-	// 			$ipAddress        = $this->request->getIPAddress();
-	// 			$this->customerModel->customerActivity(session()->get('CID'), 'Change Main Address', session()->get('CustName'), $ipAddress);
-	// 			session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Alamat berhasil pilih ');
-	// 			return redirect()->to(base_url('checkout'));
-	// 		} else {
-	// 			session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Alamat gagal pilih! ');
-	// 			return redirect()->to(base_url('checkout'));
-	// 		}
-	// 	}
-	// 	if ($changeCustomerMainAddress) {
-	// 		session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Alamat berhasil dipilih sebagai alamat utama');
-	// 		return redirect()->to(base_url('profile'));
-	// 	} else {
-	// 		session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Alamat gagal dipilih! ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	}
-	// }
-	// public function deleteAddress()
-	// {
-	// 	$deleteAddress = $this->customerModel->deleteAddress($this->request->getPost());
-	// 	if ($deleteAddress) {
-	// 		$ipAddress        = $this->request->getIPAddress();
-	// 		$this->customerModel->customerActivity(session()->get('CID'), 'Deleted Address', session()->get('CustName'), $ipAddress);
-	// 		session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Sukses!</b> Alamat berhasil dihapus ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	} else {
-	// 		session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ooops..</b>  Alamat gagal dihapus! ');
-	// 		return redirect()->to(base_url('profile'));
-	// 	}
-	// }
+
 	public function changeProfilePicture()
 	{
 		if (!$this->validate([

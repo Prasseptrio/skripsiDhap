@@ -16,7 +16,7 @@ class CustomerModel extends Model
 				customer_fullname,
 				customer_email,
 				customer_whatsapp,
-				,
+				address,
 				customer_id,
 				profile_image,
 				')
@@ -111,6 +111,7 @@ class CustomerModel extends Model
 		return $this->db->table('customers')->update([
 			'customer_fullname' => $profile['inputName'],
 			'customer_whatsapp' => $profile['inputTelephone'],
+			'customer_address'	=> $profile['inputAddress'],
 			'updated_at'		=> time()
 		], ['customer_id' => $profile['customerID']]);
 	}
@@ -132,8 +133,7 @@ class CustomerModel extends Model
 
 	function changePassword($dataInput, $token)
 	{
-		// dd($dataInput, $token);
-		// $this->db->transBegin();
+		$this->db->transBegin();
 		$salt = substr(md5(uniqid(rand(), true)), 0, 9);
 		$customer = $this->getCustomerByEmail($dataInput['inputEmail']);
 		$this->db->table('customers')->update([

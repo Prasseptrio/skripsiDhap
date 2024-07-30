@@ -47,9 +47,12 @@ class Wishlist extends BaseController
             return redirect()->to(base_url('cart'));
         }
         $phone = $this->data['customer']['customer_whatsapp'];
+        $address = $this->data['customer']['address'];
         if ($phone == '') {
             session()->setFlashdata('warningSwall', 'Silahkan lengkapi nomor telepon anda.');
-            return redirect()->to(base_url('profile'));
+        }
+        if ($address == '') {
+            session()->setFlashdata('warningSwall', 'Silahkan lengkapi Alamat Rumah anda.');
         }
         $data = array_merge($this->data, [
             'title'             => "Checkout",
