@@ -46,7 +46,6 @@ class Register extends BaseController
 		}
 		$token 			= base64_encode(random_bytes(32));
 		$saveCustomer 	= $this->customerModel->saveCustomer($this->request->getPost(), $token);
-		dd($saveCustomer);
 		if ($saveCustomer) {
 			session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Link Aktivasi Berhasil Dikirim!</b> <br>  Silahkan Cek Email Untuk Verifikasi Akun Anda.  ');
 			return redirect()->to(base_url('login'));

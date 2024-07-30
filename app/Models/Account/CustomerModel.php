@@ -35,7 +35,6 @@ class CustomerModel extends Model
 				salt,
 				token,
 				')
-			->join('customer_credential', 'customers.customer_id = customer_credential.customer_id')
 			->getWhere(['customer_email' => $email])->getRowArray();
 	}
 	// public function getAddress($customerID, $profile = false)
@@ -92,7 +91,6 @@ class CustomerModel extends Model
 		$this->db->transBegin();
 		$customer 	= $this->getCustomerByEmail($email);
 		$this->db->table('customers')->delete(['customer_email' => $email]);
-		$this->db->table('customer_credential')->delete(['customer_id' => $customer['customer_id']]);
 
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
@@ -131,28 +129,14 @@ class CustomerModel extends Model
 	{
 		return $this->db->table('customers')->select('customer_fullname, customer_email')->getWhere(['customer_email' => $email, 'is_active' => 1])->getRowArray();
 	}
-	function customerActivity($customer_id, $activity, $name, $ipAddress)
-	{
-		$dataCustomer 		= serialize([
-			'customer_id' => $customer_id,
-			'name'		  => $name
-		]);
-		$this->db->table('customer_activity')->insert([
-			'customer_id'	=> $customer_id,
-			'activity'		=> $activity,
-			'data'			=> $dataCustomer,
-			'ip_address'	=> $ipAddress,
-			'created_at'	=> time()
-		]);
-	}
 
-	function changePassword($dataInput, $token, $ipAddress)
+	function changePassword($dataInput, $token)
 	{
-		$this->db->transBegin();
+		// dd($dataInput, $token);
+		// $this->db->transBegin();
 		$salt = substr(md5(uniqid(rand(), true)), 0, 9);
 		$customer = $this->getCustomerByEmail($dataInput['inputEmail']);
-		$this->db->table('customers')->update(['ip_address' => $ipAddress, 'updated_at' => time()], ['customer_id' => $customer['customer_id']]);
-		$this->db->table('customer_credential')->update([
+		$this->db->table('customers')->update([
 			'password' 			=> sha1($salt . sha1($salt . sha1($dataInput['inputPassword']))),
 			'salt'				=> $salt,
 			'token'				=> $token,

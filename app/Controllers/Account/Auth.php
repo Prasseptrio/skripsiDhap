@@ -78,12 +78,7 @@ class Auth extends BaseController
 
 		if ($customer) {
 			$otp = random_string('numeric', 6);
-			$this->session->set(['otp' => base64_encode($otp), 'email' => $customer['customer_email'], 'token' => $token]);
-			$this->customerModel->resetToken($email, $token);
-			$this->email->setFrom(getenv('configEmail.setting'), getenv('configName.setting'));
-			$this->email->setTo($email);
-			$this->email->setSubject('Reset Password');
-			$this->email->setMessage(view('email/requestOtp', ['otp' => $otp]));
+
 			if ($this->email->send()) {
 				session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Kode OTP Berhasil Dikirim!</b> <br> Silahkan Cek Email Untuk Reset Password. ');
 				return redirect()->to(base_url('otp'));

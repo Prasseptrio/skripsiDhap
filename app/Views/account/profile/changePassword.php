@@ -5,7 +5,7 @@
     <div class="container d-flex justify-content-center">
         <div class="card card-body col-8 rounded-lg p-3" id="body" style="background-color: #dfcccc;">
             <?= $this->include('common/alerts'); ?>
-            <form action="<?= base_url('profile/sentOtp'); ?>" method="post">
+            <form action="<?= base_url('profile/saveChangePassword'); ?>" method="post">
                 <div class="change-password">
                     <h3 class="text-6 text-center font-weight-semibold mb-4">Ubah Kata Sandi</h3>
                     <div class="row d-flex justify-content-left">

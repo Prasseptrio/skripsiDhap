@@ -162,7 +162,7 @@ class SalesModel extends Model
 	{
 		return $this->db->table('sales_order')
 			->join('customers', 'sales_order.customer_id = customers.customer_id')
-			->getWhere(['customers.customer_id' => $customerID, 'transaction_date' => date('Y-m-d'), 'payment_status' => 0])->getRowArray();
+			->getWhere(['customers.customer_id' => $customerID, 'transaction_date' => date('Y-m-d'), 'payment_status' => 0, 'order_status >' => 11])->getRowArray();
 	}
 
 	public function getSalesOrderProductByOrderID($orderID)
@@ -190,18 +190,22 @@ class SalesModel extends Model
 	}
 	public function getMaxInvoice()
 	{
-		$getMax = $this->db->table('sales_order')->selectMax('order_id')->get()->getRowArray();
-		if ($getMax['order_id'] != null) {
-			$maxNumber = $getMax['order_id'];
-			$maxNumber = sprintf("%03s", $maxNumber);
+		$q = $this->db->query("SELECT MAX(RIGHT(invoice_no,3)) AS kd_max FROM sales_order WHERE DATE(transaction_date)=CURDATE()");
+		$kd = "";
+		if ($q->getNumRows() > 0) {
+			foreach ($q->getResult() as $k) {
+				$tmp = ((int)$k->kd_max) + 1;
+				$kd = sprintf("%03s", $tmp);
+			}
 		} else {
-			$maxNumber = '001';
+			$kd = "001";
 		}
-		return date('dmy') . '01' . $maxNumber;
+
+		return  'SKRPS-01-' . date('dmy') . $kd;
 	}
 	public function saveSalesOrder($dataCart, $dataInput, $total)
 	{
-		// $this->db->transBegin();
+		$this->db->transBegin();
 		if ($dataCart == 0) {
 			$this->db->transRollback();
 			return false;
@@ -297,16 +301,9 @@ class SalesModel extends Model
 	}
 	public function cancelOrder($orderID)
 	{
-		$this->db->transBegin();
-		$order = $this->db->table('sales_order')->getWhere(['order_uuid' => $orderID])->getRowArray();
-		$this->db->table('sales_order_history')->insert([
-			'order_id'				=> $order['order_id'],
-			'order_status_id'		=> '11',
-			'description'			=> 'Canceled Sales Order',
-			'created_at'			=> time(),
-			'created_by'			=> 'Customer'
-		]);
-		$this->db->table('sales_order')->update(['order_status' => '11', 'updated_at' => time()], ['order_id' => $order['order_id']]);
+		// $this->db->transBegin();
+		$order = $this->db->table('sales_order')->getWhere(['invoice_no' => $orderID])->getRowArray();
+		$this->db->table('sales_order')->update(['order_status' => '11', 'void_reason' => 'cancel order', 'void_at' => date('Y-m-d'), 'updated_at' => time()], ['order_id' => $order['order_id']]);
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
 			return false;

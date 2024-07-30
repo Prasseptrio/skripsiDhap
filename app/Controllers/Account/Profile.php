@@ -176,7 +176,7 @@ class Profile extends BaseController
 			return '0';
 		}
 	}
-	public function sentOtpChangePassword()
+	public function savechangePassword()
 	{
 		if (!$this->validate([
 			'inputPasswordNow'  => [
@@ -207,61 +207,14 @@ class Profile extends BaseController
 		$customer 		= $this->customerModel->getCustomerByEmail($email);
 		$token 			= base64_encode(random_bytes(32));
 		if ($customer) {
-			$otp = random_string('numeric', 6);
-			$dataCookie = base64_encode(serialize(['otp' => base64_encode($otp), 'email' => $customer['customer_email'], 'token' => $token, 'password' => $this->request->getPost('inputPassword')]));
-			$this->customerModel->resetToken($email, $token);
-			$this->email->setFrom(getenv('configEmail.setting'), getenv('configName.setting'));
-			$this->email->setTo($email);
-			$this->email->setSubject('Ubah Kata Sandi');
-			$this->email->setMessage(view('email/requestOtp', ['otp' => $otp]));
-			setcookie("_karnivor", $dataCookie);
-			if ($this->email->send()) {
-				session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Kode OTP Berhasil Dikirim!</b> <br> Silahkan Cek Email Untuk Reset Password.');
-				return redirect()->to(base_url('profile/inputOtp'));
+			$savePassword = $this->customerModel->changePassword(['inputEmail' => $email, 'inputPassword' => $this->request->getPost('inputPassword')], $token);
+			if ($savePassword) {
+				session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Kode Otp benar!</b> <br> Silahkan isikan password baru anda! ');
+				return redirect()->to(base_url('logout'));
 			} else {
 				session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Ubah kata sandi gagal</b> Silahkan masukan password dengan benar!');
 				return redirect()->to(base_url('profile/changePassword'));
 			}
-		}
-	}
-	public function inputOtpChangePassword()
-	{
-		if (session()->get('isLoggedIn') != TRUE) {
-			return redirect()->to(base_url('login'));
-		}
-		$data = array_merge($this->data, [
-			'title'         => 'Masukan Otp di Situs Pneumatic, Hydraulic, Networking, Software Terlengkap dan Terpercaya',
-			'description'   => '',
-			'keyword'   	=> '',
-		]);
-		return view('account/profile/inputOtp', $data);
-	}
-	public function saveChangePassword()
-	{
-		$dataOtp = $this->request->getPost(null);
-		$dataOtp = $dataOtp[1] . $dataOtp[2] .  $dataOtp[3] .  $dataOtp[4] .  $dataOtp[5] .  $dataOtp[6];
-		$dataCookie = base64_decode($_COOKIE['_karnivor']);
-		$data = unserialize($dataCookie);
-		$customer = $this->customerModel->getCustomerByEmail($data['email']);
-		if ($dataOtp == base64_decode($data['otp'])) {
-			$this->email->setFrom(getenv('configEmail.setting'), getenv('configName.setting'));
-			$this->email->setTo($data['email']);
-			$this->email->setSubject('Reset Password');
-			$this->email->setMessage(view('email/successResetPassword', ['email' => $data['email'], 'fullname' => $customer['customer_fullname']]));
-			if ($this->email->send()) {
-				$ipAddress		= $this->request->getIPAddress();
-				$this->customerModel->changePassword(['inputEmail' => $data['email'], 'inputPassword' => $data['password']], $data['token'], $ipAddress);
-				$this->customerModel->customerActivity($customer['customer_id'], 'change Password',  $customer['customer_fullname'], $ipAddress);
-				setcookie("_karnivor", 'null');
-				session()->setFlashdata('success', '<b><i class="fas fa-check-circle"></i> Kode Otp benar!</b> <br> Silahkan isikan password baru anda! ');
-				return redirect()->to(base_url('logout'));
-			} else {
-				session()->setFlashdata('error', '<b><i class="fas fa-check-circle"></i> Kode Otp yang anda masukan salah');
-				return redirect()->to(base_url('profile/inputOtp'));
-			}
-		} else {
-			session()->setFlashdata('error', '<b><i class="fas fa-check-circle"></i> Kode Otp yang anda masukan salah</b> <br> ');
-			return redirect()->to(base_url('profile/inputOtp'));
 		}
 	}
 }

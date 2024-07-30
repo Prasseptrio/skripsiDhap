@@ -85,9 +85,7 @@ $routes->post('profile/updateAddress', 'Account\Profile::updateAddress');
 $routes->delete('profile/deleteAddress', 'Account\Profile::deleteAddress');
 $routes->get('profile/changePassword', 'Account\Profile::changePassword');
 $routes->post('profile/checkPassword', 'Account\Profile::checkPassword');
-$routes->post('profile/sentOtp', 'Account\Profile::sentOtpChangePassword');
-$routes->get('profile/inputOtp', 'Account\Profile::inputOtpChangePassword');
-$routes->post('profile/save', 'Account\Profile::saveChangePassword');
+$routes->post('profile/saveChangePassword', 'Account\Profile::savechangePassword');
 
 /* =================== Wishlist ROUTES ================================== */
 $routes->post('addToCart', 'Transaction\Wishlist::addToCart');

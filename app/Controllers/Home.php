@@ -12,7 +12,6 @@ class Home extends BaseController
 	{
 		if (session()->get('CID')) {
 			$lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
-			// dd($lastSales);
 			if ($lastSales) {
 				return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['invoice_no'])));
 			}

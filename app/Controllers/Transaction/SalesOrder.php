@@ -34,7 +34,6 @@ class SalesOrder extends BaseController
             'Orders'            => $this->SalesModel->getOrderByCustomerId(session()->get('CID'), $page),
             'totalTransaction'  => $this->SalesModel->getOrderByCustomerId(session()->get('CID')),
         ]);
-        // dd($data);
         $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
         if ($lastSales) {
             return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['invoice_no'])));

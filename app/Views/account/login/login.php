@@ -106,9 +106,6 @@
                                     <div class="form-group col text-color-dark">
                                         Belum punya akun ? <a href="<?= base_url('register'); ?> " class="forgot-pw  text-color-light"> Daftar</a>
                                     </div>
-                                    <div class="form-group col text-right">
-                                        <a href="<?= base_url('forgotPassword'); ?> " class="forgot-pw d-block text-color-light">Lupa password?</a>
-                                    </div>
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="col text-right">

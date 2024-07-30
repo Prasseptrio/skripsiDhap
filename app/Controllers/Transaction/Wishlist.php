@@ -127,10 +127,8 @@ class Wishlist extends BaseController
     {
         $cancelOrder = $this->SalesModel->cancelOrder(base64_decode($this->request->getGet('inv')));
         if ($cancelOrder) {
-            $ipAddress        = $this->request->getIPAddress();
-            $this->customerModel->customerActivity(session()->get('CID'), 'Cancel Order',  session()->get('CustName'), $ipAddress);
             session()->setFlashdata('success', '<b><i class="fas fa-exclamation-triangle"></i> Berhasil</b> membatalkan transaksi');
-            return redirect()->to(base_url('transaction'));
+            return redirect()->to(base_url(''));
         } else {
             session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> membatalkan transaksi transaksi  ');
             return redirect()->to(base_url('cart'));
