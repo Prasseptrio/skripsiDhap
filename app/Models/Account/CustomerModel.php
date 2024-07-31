@@ -107,7 +107,7 @@ class CustomerModel extends Model
 		return $this->db->table('customers')->update([
 			'customer_fullname' => $profile['inputName'],
 			'customer_whatsapp' => $profile['inputTelephone'],
-			'customer_address'	=> $profile['inputAddress'],
+			'address'			=> $profile['inputAddress'],
 			'updated_at'		=> time()
 		], ['customer_id' => $profile['customerID']]);
 	}

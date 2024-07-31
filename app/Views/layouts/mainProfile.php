@@ -53,8 +53,8 @@
                         <input type="text" class="form-control form-control-sm border-grey rounded" name="inputTelephone" id="inputTelephone" aria-describedby="helpId" value="<?= $customer['customer_whatsapp']; ?>">
                     </div>
                     <div class="form-group">
-                        <label for="inputTelephone">Nomor HP/Telepon</label>
-                        <input type="text" class="form-control form-control-sm border-grey rounded" name="inputAddress" id="inputAddress" aria-describedby="helpId" value="<?= $customer['customer_whatsapp']; ?>">
+                        <label for="inputTelephone">Alamat Rumah</label>
+                        <input type="text" class="form-control form-control-sm border-grey rounded" name="inputAddress" id="inputAddress" aria-describedby="helpId" value="<?= $customer['address']; ?>">
                     </div>
 
                 </div>
