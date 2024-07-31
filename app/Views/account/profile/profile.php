@@ -40,7 +40,7 @@
                             <td><?= ($customer['customer_whatsapp']) ? $customer['customer_whatsapp'] : '- <br> <i class="text-muted"> Nomor telepon belum lengkap</i>'; ?></td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">Nomor HP/Telepon</td>
+                            <td class="font-weight-bold">Alamat Rumah</td>
                             <td><?= ($customer['address']) ? $customer['address'] : '- <br> <i class="text-muted"> Alamat Belum lengkap</i>'; ?></td>
                         </tr>
                     </table>
