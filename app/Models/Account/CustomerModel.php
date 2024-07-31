@@ -68,14 +68,10 @@ class CustomerModel extends Model
 		$this->db->table('customers')->insert([
 			'customer_fullname'		=> $name,
 			'customer_email'		=> htmlspecialchars(strtolower($customer['inputEmail'])),
+			'password'				=> sha1($salt . sha1($salt . sha1($customer['inputPassword']))),
+			'salt'					=> $salt,
+			'token'					=> $token,
 			'created_at'			=> time()
-		]);
-		$customerID = $this->db->insertID();
-		$this->db->table('customer_credential')->insert([
-			'customer_id'		=> $customerID,
-			'password'			=> sha1($salt . sha1($salt . sha1($customer['inputPassword']))),
-			'salt'				=> $salt,
-			'token'				=> $token,
 		]);
 		if ($this->db->transStatus() === FALSE) {
 			$this->db->transRollback();
