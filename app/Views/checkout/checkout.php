@@ -53,7 +53,8 @@
                      <div id="serviceDelivery" hidden>
                         <h4 class="font-weight-bold text-4 mt-4  mb-3"> Tanggal Pengantaran</h4>
                         <input type="date" class="form-control bg-danger text-light font-weight-bold datePickup" name="datePickup" value="<?= date('Y-m-d'); ?>">
-                     </div><br>
+                     </div>
+                     <br>
                      <div class="form-row row mb-3">
                         <div class="form-group col">
                            <label class="text-color-dark font-weight-bold" for="shipping_notes">Berikan Catatan:</label>

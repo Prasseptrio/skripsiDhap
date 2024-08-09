@@ -325,34 +325,4 @@ class SalesModel extends Model
 			return true;
 		}
 	}
-	public function productReceived($orderID)
-	{
-		return $this->db->table('sales_order')->update(['order_status' => 8], ['order_id' => $orderID]);
-	}
-	function getReview($orderID, $productID)
-	{
-		return $this->db->table('product_review')->getWhere(['product_review_order_id' => $orderID, 'product_review_product_id' => $productID])->getRowArray();
-	}
-	public function saveReview($dataInput, $showName)
-	{
-		$text = substr(session()->get('CustName'), 0, 15);
-		$texCut = strrpos($text, ' ');
-		$cutName = substr(session()->get('CustName'), 0, $texCut);
-		if ($showName == 1) {
-			$name = $cutName;
-		} else {
-			$firstWord = substr($cutName, 0, 1);
-			$lastWord = substr($cutName, -1, 1);
-			$name = $firstWord . '****' . $lastWord;
-		}
-		return $this->db->table('product_review')->insert([
-			'product_review_order_id'		=> $dataInput['orderID'],
-			'product_review_product_id'		=> $dataInput['productId'],
-			'product_review_customer_id'	=> session()->get('CID'),
-			'product_review_author'			=> $name,
-			'product_review_text'			=> $dataInput['review'],
-			'product_review_rating'			=> $dataInput['rating'],
-			'product_review_status'			=> '1',
-		]);
-	}
 }

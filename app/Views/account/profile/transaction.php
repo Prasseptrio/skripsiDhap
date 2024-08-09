@@ -65,7 +65,7 @@
                                         <span class="badge badge-warning" style="color:GoldenRod ; background-color:LightGoldenRodYellow;"><?= $order['order_status_name_sky']; ?></span>
                                         </p>
                                         <?php if ($order['order_status'] >= '7' && $order['order_status'] <= '10') : ?>
-                                            <h5 class=" font-weight-bold text-right">INV- <?= '' . $order['invoice_no']; ?></h5>
+                                            <h5 class=" font-weight-bold text-right"><?= '' . $order['invoice_no']; ?></h5>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                     </div>
@@ -103,11 +103,11 @@
                                         <b>Detail Transaksi</b>
                                     </a>
                                     <?php if ($order['order_status'] == '10' || $order['order_status'] == '8') : ?>
-                                        <a href="<?= base_url('transaction/review?inv=' . base64_encode($order['invoice_no'])); ?>" class="btn btn-danger mx-2 btn-h-2 btn-v-3 font-weight-semibold">Beri ulasan</a>
+                                        <button class="btn btn-danger mx-2 btn-h-2 btn-v-3 font-weight-semibold">Beri ulasan</button>
                                     <?php elseif ($order['order_status'] == 7) : ?>
-                                        <form action="<?= base_url('transaction/received?inv=' . base64_encode($order['order_uuid'])); ?>" method="post">
-                                            <button class="btn btn-outline-danger mx-2 btn-h-2 btn-v-3 font-weight-semibold">Barang Diterima</button>
-                                        </form>
+                                        <!-- <form method="post"> -->
+                                        <button class="btn btn-outline-danger mx-2 btn-h-2 btn-v-3 font-weight-semibold">Barang Diterima</button>
+                                        <!-- </form> -->
                                     <?php endif; ?>
                                 </div>
                             </li>

@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-7 text-right">
                     <span class="text-danger font-weight-bold mb-2">
-                        INV- <?= $Order['invoice_no']; ?>
+                        <?= $Order['invoice_no']; ?>
                     </span>
                 </div>
             </div>
