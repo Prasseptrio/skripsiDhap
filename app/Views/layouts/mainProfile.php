@@ -17,8 +17,6 @@
                     <a href="<?= base_url('transaction'); ?>" class="btn btn-block text-2 font-weight-semibold text-left <?= ($Rescource == 'transaction') ? 'btn-rounded btn-outline-danger' : ''; ?>">Daftar Transaksi</a>
                     <hr>
                     <a href=" <?= base_url('cart'); ?>" class="btn btn-block text-2 font-weight-semibold text-left">Keranjang Belanja</a>
-                    <hr>
-                    <a href=" <?= base_url('cart'); ?>" class="btn btn-block text-2 font-weight-semibold text-left">Keranjang Belanja</a>
                 </div>
             </div>
         </aside>
