@@ -111,11 +111,10 @@ class Wishlist extends BaseController
             return redirect()->to(base_url('login'));
         }
         $invoice = $this->request->getGet('inv');
-        $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
-        if (!$lastSales) {
-            session()->setFlashdata('error', '<b><i class="fas fa-exclamation-triangle"></i> Gagal</b> melanjutkan transaksi ');
-            return redirect()->to(base_url('transaction'));
-        }
+        // $lastSales = $this->SalesModel->getLastSalesOrderByCustomerID(session()->get('CID'));
+        // if ($lastSales) {
+        //     return redirect()->to(base_url('agree?inv=' . base64_encode($lastSales['invoice_no'])));
+        // }
         $salesOrder = $this->SalesModel->getSalesOrderByInvoice(base64_decode($invoice));
         $data = array_merge($this->data, [
             'title'             => "Pembayaran",
@@ -165,7 +164,8 @@ class Wishlist extends BaseController
         $savePaymentProof = $this->SalesModel->savePaymentProof($this->request->getPost(null),  $fileName);
         if ($savePaymentProof) {
             $customer = $this->customerModel->getCustomerByID(session()->get('CID'));
-            $dir = 'assets/images/customers/' . $customer['customer_id'] . '/paymentProof/';
+            // C:\xampp\htdocs\server\karnevor-panel\public\assets\images
+            $dir =  APPPATH . '../' . '../' . 'karnevor-panel/public/assets/images/customers/' . $customer['customer_id'] . '/paymentProof/';
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }

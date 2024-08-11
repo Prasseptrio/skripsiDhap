@@ -5,9 +5,7 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
-	public function __construct()
-	{
-	}
+	public function __construct() {}
 	public function index()
 	{
 		if (session()->get('CID')) {

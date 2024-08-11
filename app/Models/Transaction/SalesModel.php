@@ -162,7 +162,7 @@ class SalesModel extends Model
 	{
 		return $this->db->table('sales_order')
 			->join('customers', 'sales_order.customer_id = customers.customer_id')
-			->getWhere(['customers.customer_id' => $customerID, 'transaction_date' => date('Y-m-d'), 'payment_status' => 0, 'order_status >' => 11])->getRowArray();
+			->getWhere(['customers.customer_id' => $customerID, 'transaction_date' => date('Y-m-d'), 'payment_status' => 0, 'order_status' => 9])->getRowArray();
 	}
 
 	public function getSalesOrderProductByOrderID($orderID)
@@ -215,13 +215,14 @@ class SalesModel extends Model
 			'invoice_no'			=> $invoice,
 			'customer_id'			=> session()->get('CID'),
 			'order_status'			=> '9',
-			'payment_method'		=> '1',
+			'payment_method'		=> '',
 			'payment_status'		=> '0',
 			'transaction_date'		=> date('Y-m-d'),
 			'total'					=> $total,
 			'notes'					=> $dataInput['shipping_notes'],
 			'cost_delivery'			=> ($dataInput['inputServices'] == 2) ? $dataInput['CostDelivery'] : '0',
 			'type'					=> 2,
+			'status'				=> 1,
 			'created_at'			=> time()
 		]);
 		$orderId = $this->db->insertID('sales_order', 'order_id');
@@ -297,7 +298,7 @@ class SalesModel extends Model
 	{
 		$this->db->transBegin();
 		$order = $this->db->table('sales_order')->getWhere(['invoice_no' => $orderID])->getRowArray();
-		$this->db->table('sales_order')->update(['order_status' => '11', 'void_reason' => 'cancel order', 'void_at' => date('Y-m-d'), 'updated_at' => time()], ['order_id' => $order['order_id']]);
+		$this->db->table('sales_order')->update(['order_status' => '11', 'void_reason' => 'cancel order', 'void_at' => date('Y-m-d'), 'updated_at' => time(), 'status' => 3], ['order_id' => $order['order_id']]);
 		if ($this->db->transStatus() === false) {
 			$this->db->transRollback();
 			return false;
