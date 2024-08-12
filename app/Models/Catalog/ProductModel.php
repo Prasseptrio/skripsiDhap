@@ -40,7 +40,6 @@ class ProductModel extends Model
 	public function getCategoryByParent($parent)
 	{
 		return $this->db->table('product_category')
-			->select(',product_category_name,product_category_image')
 			->orderBy('sort_order')
 			->where(['product_category_parent' => $parent])
 			->get()->getResultArray();
